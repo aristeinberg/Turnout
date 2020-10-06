@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, AsyncStorage } from 'react-native';
 import * as Contacts from 'expo-contacts';
 
 import Person from './Person';
@@ -9,10 +9,29 @@ const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 72
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, _setContacts] = useState([]);
+  
+  async function loadContacts() {
+    try {
+      const contacts = JSON.parse(await AsyncStorage.getItem('CONTACTS'));
+      if (contacts == null) return;
+      _setContacts(contacts);
+    } catch (e) {
+      console.error('Failed to load contacts', e);
+    }
+  }
 
-  function addContact(contact) {
-    setContacts([...contacts, contact]);
+  useEffect(() => {
+    loadContacts();
+  }, []);
+
+  async function setContacts(contacts) {
+    try {
+      await AsyncStorage.setItem('CONTACTS', JSON.stringify(contacts));
+      _setContacts(contacts);
+    } catch (e) {
+      console.error('Failed to save contacts', e);
+    }
   }
 
   async function importContacts() {
