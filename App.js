@@ -10,21 +10,22 @@ export default function App() {
   const [contacts, setContacts] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Contacts.requestPermissionsAsync();
-      if (status === 'granted') {
-        const { data } = await Contacts.getContactsAsync({
-          fields: [Contacts.Fields.PhoneNumbers],
-        });
-
-        if (data.length > 0) {
-          const contact = data[0];
-          console.log(contact);
-        }
-        setContacts(data);
-      }
-    })();
   }, []);
+
+  async function importContacts() {
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status === 'granted') {
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.PhoneNumbers],
+      });
+
+      if (data.length > 0) {
+        const contact = data[0];
+        console.log(contact);
+      }
+      setContacts(data);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -33,9 +34,14 @@ export default function App() {
           Your contacts
         </Text>
         <TouchableOpacity
-          onPress={() => alert('Hello, world!')}
-          style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5 }}>
-          <Text style={{ fontSize: 20, color: '#fff' }}>Select</Text>
+          onPress={importContacts}
+          style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
+          <Text style={{ fontSize: 20, color: '#fff' }}>Import</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setContacts(null)}
+          style={{ backgroundColor: 'grey', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
+          <Text style={{ fontSize: 20, color: '#fff' }}>Clear</Text>
         </TouchableOpacity>
       </View>
       <FlatList style={styles.list}
