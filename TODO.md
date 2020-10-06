@@ -1,11 +1,9 @@
 - [ ] store contacts directly in the app vs relying on system contacts
   - [ ] a contact includes name, birthdate, county, phone number/email, any other fields that could be useful (address? birthday?) though they are unlikely to be populated, and modified timestamp
 - [ ] dialog to choose where to import contacts from
-  - [ ] button in the dialog to import from system contacts.
-  - [ ] filter down to contacts with pennsylvania area codes to keep this manageable. (this could eventually be a more complex interaction where you choose which of your contacts to import)
-  - [ ] could also invent different places to import contacts from, e.g. facebook
+  - [ ] improved contact import that allows you to choose which contacts to import rather than purely relying on PA area codes
+  - [ ] could also import contacts from other places, e.g. facebook
   - [ ] manually enter a contact by typing in the info
-
 - [ ] "action" buttons for each Person are dynamic based on what info we have about the contact
   - [ ] enter/find birthday
     - [ ] this could help you by opening a link to a facebook search for their name
