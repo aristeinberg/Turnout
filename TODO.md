@@ -1,0 +1,22 @@
+- [ ] store contacts directly in the app vs relying on system contacts
+  - [ ] a contact includes name, birthdate, county, phone number/email, any other fields that could be useful (address? birthday?) though they are unlikely to be populated, and modified timestamp
+- [ ] dialog to choose where to import contacts from
+  - [ ] button in the dialog to import from system contacts.
+  - [ ] filter down to contacts with pennsylvania area codes to keep this manageable. (this could eventually be a more complex interaction where you choose which of your contacts to import)
+  - [ ] could also invent different places to import contacts from, e.g. facebook
+  - [ ] manually enter a contact by typing in the info
+
+- [ ] "action" buttons for each Person are dynamic based on what info we have about the contact
+  - [ ] enter/find birthday
+    - [ ] this could help you by opening a link to a facebook search for their name
+    - [ ] scan your phone calendar for their birthdate
+  - [ ] enter/find county
+    - [ ] if you know what city they live in, we could tell you what county it's in
+  - [ ] check voting status
+    - [ ] open up https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx
+    - [ ] ideally, we could scrape the info from this page
+    - [ ] if scraping is not feasible, guide the user through what they need to enter as best as possible
+    - [ ] if scraping is not available, prompt the user to tell us what the vote status they saw was
+  - [ ] reach out to the contact
+    - [ ] give some suggestions for what to text the person, based on their current vote status
+  
