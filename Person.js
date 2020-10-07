@@ -1,33 +1,42 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Person(props) {
+  const navigation = useNavigation();
+
+  function navigateToPersonDetails() {
+    return navigation.navigate("PersonDetails", {contact: props.contact.serialize()});
+  }
+
   return (
-    <View style={styles.person}>
-      <View style={styles.personDetails}>
-        <Text style={styles.name}>
-          {props.contact.name}
-        </Text>
-        <Text style={styles.detail}>
-          {props.contact.getBirthdayStr()}
-        </Text>
-        <Text style={styles.detail}>
-          {props.contact.data.county}
-        </Text>
+    <TouchableWithoutFeedback onPress={navigateToPersonDetails}>
+      <View style={styles.person} >
+        <View style={styles.personDetails}>
+          <Text style={styles.name}>
+            {props.contact.name}
+          </Text>
+          <Text style={styles.detail}>
+            {props.contact.getBirthdayStr()}
+          </Text>
+          <Text style={styles.detail}>
+            {props.contact.data.county}
+          </Text>
+        </View>
+        <View style={styles.actions}>
+          <TouchableOpacity
+            onPress={() => alert('Hello, world!')}
+            style={styles.action}>
+            <Text style={{ fontSize: 20, color: '#fff' }}>Action</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={navigateToPersonDetails}
+            style={styles.secondaryAction}>
+            <Text style={{ fontSize: 20 }}>Edit</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.actions}>
-        <TouchableOpacity
-          onPress={() => alert('Hello, world!')}
-          style={styles.action}>
-          <Text style={{ fontSize: 20, color: '#fff' }}>Action</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => alert('Hello, world!')}
-          style={styles.secondaryAction}>
-          <Text style={{ fontSize: 20 }}>Edit</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

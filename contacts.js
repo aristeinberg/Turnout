@@ -13,6 +13,7 @@ export default class Contact {
         this.name = name;
         this.source = source;
         this.data = {};
+
         Object.assign(this.data, {
             birthMonth : null,
             birthDay : null,
