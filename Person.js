@@ -6,13 +6,13 @@ export default function Person(props) {
     <View style={styles.person}>
       <View style={styles.personDetails}>
         <Text style={styles.name}>
-          {props.name}
+          {props.contact.name}
         </Text>
         <Text style={styles.detail}>
-          {props.birthday}
+          {props.contact.getBirthdayStr()}
         </Text>
         <Text style={styles.detail}>
-          {props.county}
+          {props.contact.data.county}
         </Text>
       </View>
       <TouchableOpacity

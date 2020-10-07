@@ -1,5 +1,3 @@
-- [ ] store contacts directly in the app vs relying on system contacts
-  - [ ] a contact includes name, birthdate, county, phone number/email, any other fields that could be useful (address? birthday?) though they are unlikely to be populated, and modified timestamp
 - [ ] dialog to choose where to import contacts from
   - [ ] improved contact import that allows you to choose which contacts to import rather than purely relying on PA area codes
   - [ ] could also import contacts from other places, e.g. facebook
