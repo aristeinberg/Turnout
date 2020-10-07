@@ -9,6 +9,9 @@ function EmbedSocialMedia(props) {
 
   props.contact.lookupInAddressBook().then((abContact) => {
     console.log(abContact);
+    if (!abContact['socialProfiles']) {
+      return;
+    }
     for (const sp of abContact['socialProfiles']) {
       if (sp['service'] == 'Facebook') {
         setSocialMediaUrl(sp['url'].replace('http:', 'https:').replace('/www.', '/m.') + '/about');
@@ -16,15 +19,17 @@ function EmbedSocialMedia(props) {
       }
     }
   });
+
   const url = socialMediaUrl ||
     'https://www.facebook.com/search/top?q=' + encodeURIComponent(props.contact.name);
   console.log('url is ', url)
   return (
-    <View style={{ margin: 10, borderWidth: 1, borderColor: 'gray', flex: 1, flexDirection: 'row' }}>
-    <WebView
-      source={{ uri: url }}
-      sharedCookiesEnabled={true}
-      /></View>
+    <View style={{ flexDirection: 'column', flex: 1, padding: 5 }}>
+      <Text>See if you can find their birthday on Facebook? (Look for "About" => "Basic Info")</Text>
+      <View style={{ borderWidth: 1, borderColor: 'gray', flex: 1, flexDirection: 'row' }}>
+        <WebView source={{ uri: url }} sharedCookiesEnabled={true} />
+      </View>
+    </View>
   );
 }
 
@@ -36,22 +41,31 @@ function PersonDetail(props) {
       <Text style={styles.name}>
         {props.contact.name}
       </Text>
-      <TouchableOpacity style={styles.editableField} onPress={() => setExpandBirthday(!expandBirthday)}>
-        { props.contact.data.birthYear ?
-            <Text>{props.contact.getBirthdayStr()}</Text>
-          : <Text>Find birthday</Text>
-        }
-      </TouchableOpacity>
+      <View style={styles.personDetailRow}>
+        <Text>
+          Birthday: { props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown" }
+        </Text>
+        <TouchableOpacity style={styles.editableField} onPress={() => setExpandBirthday(!expandBirthday)}>
+          <Text>{ props.contact.data.birthMonth ? "Find" : "Edit" }</Text>
+        </TouchableOpacity>
+      </View>
       { expandBirthday && <EmbedSocialMedia contact={props.contact} />}
-      <TouchableOpacity style={styles.editableField}>
-        { props.contact.data.county ?
-            <Text>{props.contact.data.county}</Text>
-          : <Text>Find county</Text>
-        }
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.editableField, styles.disabled]}>
-        <Text style={styles.disabled}>Check voting status</Text>
-      </TouchableOpacity>
+      <View style={styles.personDetailRow}>
+        <Text>
+          County: { props.contact.data.county || "Unknown" }
+        </Text>
+        <TouchableOpacity style={styles.editableField}>
+          <Text>{ props.contact.data.county ? "Find" : "Edit" }</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.personDetailRow}>
+        <Text>
+          Voting status: { "Unknown" }
+        </Text>
+        <TouchableOpacity style={[styles.editableField, styles.disabled]}>
+          <Text>{ false ? "Update" : "Check" }</Text>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={[styles.editableField, styles.warning]}>
         <Text style={styles.warning}>Delete contact</Text>
       </TouchableOpacity>
@@ -70,9 +84,14 @@ const styles = StyleSheet.create({
   personDetail: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-around',
     alignItems: 'center',
     margin: 0,
+  },
+  personDetailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: 10,
   },
   name: {
     fontSize: 24,

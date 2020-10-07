@@ -4,7 +4,6 @@
   - [ ] manually enter a contact by typing in the info
 - [ ] "action" buttons for each Person are dynamic based on what info we have about the contact
   - [ ] enter/find birthday
-    - [ ] this could help you by opening a link to a facebook search for their name
     - [ ] scan your phone calendar for their birthdate
   - [ ] enter/find county
     - [ ] if you know what city they live in, we could tell you what county it's in
