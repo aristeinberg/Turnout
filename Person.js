@@ -15,11 +15,18 @@ export default function Person(props) {
           {props.contact.data.county}
         </Text>
       </View>
-      <TouchableOpacity
-        onPress={() => alert('Hello, world!')}
-        style={styles.action}>
-        <Text style={{ fontSize: 20, color: '#fff' }}>Action</Text>
-      </TouchableOpacity>
+      <View style={styles.actions}>
+        <TouchableOpacity
+          onPress={() => alert('Hello, world!')}
+          style={styles.action}>
+          <Text style={{ fontSize: 20, color: '#fff' }}>Action</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => alert('Hello, world!')}
+          style={styles.secondaryAction}>
+          <Text style={{ fontSize: 20 }}>Edit</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -28,7 +35,6 @@ export default function Person(props) {
 const styles = StyleSheet.create({
   person: {
     flexDirection: 'row',
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -44,9 +50,21 @@ const styles = StyleSheet.create({
   details: {
     fontSize: 14,
   },
+  actions: {
+    flexDirection: 'row',
+  },
   action: {
     backgroundColor: 'blue',
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 5,
-  }
+    marginRight: 5,
+  },
+  secondaryAction: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'gray',
+  },
 });
