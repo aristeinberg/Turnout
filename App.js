@@ -5,7 +5,7 @@ import { AsyncStorage } from 'react-native';
 import * as Contacts from 'expo-contacts';
 
 import Contact from './contacts';
-import Person from './Person';
+import PersonDetails from './PersonDetail';
 import PersonList, { ContactsContext } from './PersonList';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
@@ -80,12 +80,5 @@ export default function App() {
     </ContactsContext.Provider>
   );
 
-}
-
-function PersonDetails({route}) {
-  const contact = Contact.deserialize(route.params.contact);
-  return (
-    <Person contact={contact} />
-  );
 }
 

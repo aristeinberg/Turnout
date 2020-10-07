@@ -1,3 +1,5 @@
+import * as Contacts from 'expo-contacts';
+
 export const ContactSources = {
     ADDRESS_BOOK: 'ab',
     MANUAL: 'man',
@@ -104,5 +106,23 @@ export default class Contact {
             data.email = c.emails[0].email;
         }
         return new Contact(c.id, c.name, ContactSources.ADDRESS_BOOK, data);
+    }
+
+    async lookupInAddressBook() {
+        if (this.source != ContactSources.ADDRESS_BOOK) {
+            return;
+        }
+
+        const { status } = await Contacts.requestPermissionsAsync();
+        if (status === 'granted') {
+            const data = await Contacts.getContactByIdAsync(this.id, [
+                Contacts.Fields.PhoneNumbers,
+                Contacts.Fields.Birthday,
+                Contacts.Fields.SocialProfiles,
+                Contacts.Fields.Emails,
+            ]);
+            console.log('hi', this.id);
+            return data;
+        }
     }
 }
