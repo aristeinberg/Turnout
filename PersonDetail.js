@@ -26,7 +26,7 @@ function EmbedSocialMedia(props) {
   console.log('url is ', url)
   return (
     <View style={{ flexDirection: 'column', flex: 1, padding: 5 }}>
-      <Text>See if you can find their birthday on Facebook? (Look for "About" => "Basic Info")</Text>
+      <Text>See if you can find their birthday on Facebook? (Look for "About" =&gt; "Basic Info")</Text>
       <View style={{ borderWidth: 1, borderColor: 'gray', flex: 1, flexDirection: 'row' }}>
         <WebView source={{ uri: url }} sharedCookiesEnabled={true} />
       </View>
