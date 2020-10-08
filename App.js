@@ -53,7 +53,7 @@ export default function App() {
 
       const filteredContacts = (
          data.filter(c => c.phoneNumbers &&
-                          c.phoneNumbers.filter(p => p.digits.match(PA_NUM_REGEX)).length > 0)
+                          c.phoneNumbers.filter(p => p.digits && p.digits.match(PA_NUM_REGEX)).length > 0)
              .map(c => Contact.fromAddressBook(c))
       );
 
