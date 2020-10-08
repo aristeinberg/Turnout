@@ -66,7 +66,11 @@ export default class Contact {
 
   static deserializeList(str) {
     const l = JSON.parse(str);
-    return l.map((c) => Contact.deserialize(c));
+    if (l) {
+      return l.map((c) => Contact.deserialize(c));
+    } else {
+      return null;
+    }
   }
 
   getBirthdayStr() {
