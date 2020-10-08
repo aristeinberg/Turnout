@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { WebView } from 'react-native-webview';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Contact from './contacts';
 
@@ -36,17 +37,38 @@ function EmbedSocialMedia(props) {
 function PersonDetail(props) {
   const [expandBirthday, setExpandBirthday] = useState(false);
 
+  function updateBirthday(event, date) {
+    console.log(event, date);
+    props.contact.birthYear = date.getYear();
+    props.contact.birthMonth = date.getMonth();
+    props.contact.birthDay = date.getDate();
+  }
+
   return (
     <View style={styles.personDetail}>
       <Text style={styles.name}>
         {props.contact.name}
       </Text>
       <View style={styles.personDetailRow}>
+        <View style={{flex: 1}}>
         <Text>
-          Birthday: { props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown" }
+          Birthday: {
+            expandBirthday ||
+            (props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown")
+          }
         </Text>
+        { expandBirthday &&
+          <DateTimePicker
+            mode="date" 
+            onChange={updateBirthday}
+            value={new Date(props.contact.data.birthYear || 2020,
+                            props.contact.data.birthMonth || 0,
+                            props.contact.data.birthDay || 1)}
+          />
+        }
+        </View>
         <TouchableOpacity style={styles.editableField} onPress={() => setExpandBirthday(!expandBirthday)}>
-          <Text>{ props.contact.data.birthMonth ? "Find" : "Edit" }</Text>
+          <Text>{ props.contact.data.birthDay ? "Edit" : "Find" }</Text>
         </TouchableOpacity>
       </View>
       { expandBirthday && <EmbedSocialMedia contact={props.contact} />}
@@ -55,7 +77,7 @@ function PersonDetail(props) {
           County: { props.contact.data.county || "Unknown" }
         </Text>
         <TouchableOpacity style={styles.editableField}>
-          <Text>{ props.contact.data.county ? "Find" : "Edit" }</Text>
+          <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.personDetailRow}>
@@ -89,6 +111,7 @@ const styles = StyleSheet.create({
   },
   personDetailRow: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     width: '100%',
     padding: 10,

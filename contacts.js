@@ -33,6 +33,7 @@ export default class Contact {
     // update a field's value, and bump the modification time
     // (there's probably a cleaner way to do this??)
     set(field, value) {
+        // TBD: do we need to do something up the stack to make this "stick"? probably!
         this.data[field] = value;
         this.data.modified = new Date();
     }
@@ -121,7 +122,6 @@ export default class Contact {
                 Contacts.Fields.SocialProfiles,
                 Contacts.Fields.Emails,
             ]);
-            console.log('hi', this.id);
             return data;
         }
     }
