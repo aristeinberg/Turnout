@@ -39,6 +39,15 @@ export default function App() {
     }
   }
 
+  async function updateContact(id, data) {
+    const newContact = Contact.deserialize(contacts[id].serialize()); // deep copy
+    Object.assign(newContact.data, data);
+    newContact.data.modified = new Date();
+    const newContacts = {...contacts};
+    newContacts[id] = newContact;
+    setContacts(newContacts);
+  }
+
   async function importContacts() {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
@@ -70,6 +79,7 @@ export default function App() {
       contacts: contacts,
       importContacts: importContacts,
       setContacts: setContacts,
+      updateContact: updateContact,
     }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="PersonList">

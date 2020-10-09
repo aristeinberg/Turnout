@@ -37,19 +37,6 @@ export default class Contact {
     );
   }
 
-  // update a field's value, and bump the modification time
-  // (there's probably a cleaner way to do this??)
-  set(field, value) {
-    // TBD: do we need to do something up the stack to make this "stick"? probably!
-    this.data[field] = value;
-    this.data.modified = new Date();
-  }
-
-  update(updates) {
-    Object.assign(this.data, updates);
-    this.data.modified = new Date();
-  }
-
   serialize() {
     return JSON.stringify({
       i: this.id,
@@ -105,7 +92,8 @@ export default class Contact {
     };
     let s = `${MONTHS[this.data.birthMonth]} ${this.data.birthDay}`;
     if (this.data.birthYear) {
-      s += `, ${this.data.birthYear}`;
+      const addToYear = (this.data.birthYear < 1000 ? 1900 : 0);
+      s += `, ${addToYear + this.data.birthYear}`;
     }
     return s;
   }
