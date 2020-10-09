@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { WebView } from 'react-native-webview';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -40,8 +40,9 @@ function PersonDetail(props) {
     useState(new Date(props.contact.data.birthYear || 2020,
                       props.contact.data.birthMonth || 0,
                       props.contact.data.birthDay || 1));
+  const { updateContact } = useContext(ContactsContext);
 
-  function toggleBirthday(updateContact) {
+  function toggleBirthday() {
     if (expandBirthday) {
       updateContact(props.contact.id, {
         birthYear: selectedDate.getYear(),
@@ -53,58 +54,55 @@ function PersonDetail(props) {
   }
 
   return (
-    <ContactsContext.Consumer>{({ updateContact }) => (
-      <View style={styles.personDetail}>
-        <Text style={styles.name}>
-          {props.contact.name}
-        </Text>
-        <View style={styles.personDetailRow}>
-          <View style={{flex: 1}}>
-          <Text>
-            Birthday: {
-              expandBirthday ||
-              (props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown")
-            }
-          </Text>
-          { expandBirthday &&
-            <DateTimePicker
-              mode="date"
-              onChange={(event, date) => setSelectedDate(date)}
-              value={selectedDate}
-            />
+    <View style={styles.personDetail}>
+      <Text style={styles.name}>
+        {props.contact.name}
+      </Text>
+      <View style={styles.personDetailRow}>
+        <View style={{flex: 1}}>
+        <Text>
+          Birthday: {
+            expandBirthday ||
+            (props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown")
           }
-          </View>
-          <TouchableOpacity style={styles.editableField} onPress={() => toggleBirthday(updateContact)}>
-            <Text>
-              { expandBirthday ? "Save" :
-                                 props.contact.data.birthDay ? "Edit" :
-                                                               "Find" }
-            </Text>
-          </TouchableOpacity>
+        </Text>
+        { expandBirthday &&
+          <DateTimePicker
+            mode="date"
+            onChange={(event, date) => setSelectedDate(date)}
+            value={selectedDate}
+          />
+        }
         </View>
-        { expandBirthday && <EmbedSocialMedia contact={props.contact} />}
-        <View style={styles.personDetailRow}>
+        <TouchableOpacity style={styles.editableField} onPress={toggleBirthday}>
           <Text>
-            County: { props.contact.data.county || "Unknown" }
+            { expandBirthday ? "Save" :
+                                props.contact.data.birthDay ? "Edit" :
+                                                              "Find" }
           </Text>
-          <TouchableOpacity style={styles.editableField}>
-            <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.personDetailRow}>
-          <Text>
-            Voting status: { "Unknown" }
-          </Text>
-          <TouchableOpacity style={[styles.editableField, styles.disabled]}>
-            <Text>{ false ? "Update" : "Check" }</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={[styles.editableField, styles.warning]}>
-          <Text style={styles.warning}>Delete contact</Text>
         </TouchableOpacity>
       </View>
-    )}
-    </ContactsContext.Consumer>
+      { expandBirthday && <EmbedSocialMedia contact={props.contact} />}
+      <View style={styles.personDetailRow}>
+        <Text>
+          County: { props.contact.data.county || "Unknown" }
+        </Text>
+        <TouchableOpacity style={styles.editableField}>
+          <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.personDetailRow}>
+        <Text>
+          Voting status: { "Unknown" }
+        </Text>
+        <TouchableOpacity style={[styles.editableField, styles.disabled]}>
+          <Text>{ false ? "Update" : "Check" }</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={[styles.editableField, styles.warning]}>
+        <Text style={styles.warning}>Delete contact</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 

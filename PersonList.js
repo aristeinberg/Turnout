@@ -1,40 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 
 import { ContactsContext } from './contacts';
 import Person from './Person';
 
 export default function PersonList() {
+  const { contacts, importContacts, setContacts } = useContext(ContactsContext);
+
   return (
-    <ContactsContext.Consumer>{({
-        contacts, importContacts, setContacts
-      }) => (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>
-            Your contacts
-          </Text>
-          <TouchableOpacity
-            onPress={importContacts}
-            style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
-            <Text style={{ fontSize: 20, color: '#fff' }}>Import</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setContacts([])}
-            style={{ backgroundColor: 'grey', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
-            <Text style={{ fontSize: 20, color: '#fff' }}>Clear</Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList style={styles.list}
-                  data={Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name))}
-                  renderItem={({item}) => <Person contact={item} />}
-                  keyExtractor={(item) => item.id}
-        />
-        <StatusBar style="auto" />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>
+          Your contacts
+        </Text>
+        <TouchableOpacity
+          onPress={importContacts}
+          style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
+          <Text style={{ fontSize: 20, color: '#fff' }}>Import</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setContacts([])}
+          style={{ backgroundColor: 'grey', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
+          <Text style={{ fontSize: 20, color: '#fff' }}>Clear</Text>
+        </TouchableOpacity>
       </View>
-      )}
-    </ContactsContext.Consumer>
+      <FlatList style={styles.list}
+                data={Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name))}
+                renderItem={({item}) => <Person contact={item} />}
+                keyExtractor={(item) => item.id}
+      />
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
