@@ -1,11 +1,6 @@
-- [ ] i think we might need to change how we persist data. at a top level, just store a list of contact ids and then for each contact save its state separately. the upside would be that we can serialize an update to a single contact without updating the entire database each time.
 - [ ] dialog to choose where to import contacts from
-  - [ ] improved contact import that allows you to choose which contacts to import rather than purely relying on PA area codes
-  - [ ] could also import contacts from other places, e.g. facebook
   - [ ] manually enter a contact by typing in the info
-- [ ] "action" buttons for each Person are dynamic based on what info we have about the contact
-  - [ ] enter/find birthday - need ability to save birthday after updating widget.
-    - [ ] try to scan your phone calendar for their birthdate?
+- In PersonDetails:
   - [ ] enter/find county
     - [ ] if you know what city they live in, we could tell you what county it's in
   - [ ] check voting status
@@ -15,4 +10,11 @@
     - [ ] if scraping is not available, prompt the user to tell us what the vote status they saw was
   - [ ] reach out to the contact
     - [ ] give some suggestions for what to text the person, based on their current vote status
-  
+
+- advanced features:
+  - [ ] try to scan your phone calendar for birthdates
+  - [ ] figure out other places to import contacts from, e.g. facebook
+  - [ ] improved phone address book import that allows you to choose which contacts to import rather than purely relying on PA area codes
+
+- bugs:
+  - [ ] the birthday field doesn't automatically get refreshed when you hit save in PersonDetails

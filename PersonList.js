@@ -27,7 +27,7 @@ export default function PersonList() {
           </TouchableOpacity>
         </View>
         <FlatList style={styles.list}
-                  data={Object.values(contacts)}
+                  data={Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name))}
                   renderItem={({item}) => <Person contact={item} />}
                   keyExtractor={(item) => item.id}
         />

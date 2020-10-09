@@ -72,6 +72,19 @@ export default class Contact {
     }
   }
 
+  getNextStepStr() {
+    if (!this.data.birthDay) {
+      return 'Find birthday';
+    }
+    if (!this.data.county) {
+      return 'Find county';
+    }
+    if (!this.data.voteStatus) {
+      return 'Check voting status';
+    }
+    return 'Reach out';
+  }
+
   getBirthdayStr() {
     if (!this.data.birthDay) {
       return '';

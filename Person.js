@@ -25,14 +25,9 @@ export default function Person(props) {
         </View>
         <View style={styles.actions}>
           <TouchableOpacity
-            onPress={() => alert('Hello, world!')}
-            style={styles.action}>
-            <Text style={{ fontSize: 20, color: '#fff' }}>Action</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
             onPress={navigateToPersonDetails}
             style={styles.secondaryAction}>
-            <Text style={{ fontSize: 20 }}>Edit</Text>
+            <Text>{ props.contact.getNextStepStr() }</Text>
           </TouchableOpacity>
         </View>
       </View>
