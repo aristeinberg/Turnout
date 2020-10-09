@@ -107,7 +107,9 @@ function PersonDetail(props) {
 }
 
 export default function PersonDetails({route}) {
-  const contact = Contact.deserialize(route.params.contact);
+  const { contacts } = useContext(ContactsContext);
+  const contact = contacts[route.params.contactId];
+
   return (
     <PersonDetail contact={contact} />
   );

@@ -15,6 +15,3 @@
   - [ ] try to scan your phone calendar for birthdates
   - [ ] figure out other places to import contacts from, e.g. facebook
   - [ ] improved phone address book import that allows you to choose which contacts to import rather than purely relying on PA area codes
-
-- bugs:
-  - [ ] the birthday field doesn't automatically get refreshed when you hit save in PersonDetails
