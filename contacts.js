@@ -1,4 +1,7 @@
+import React from 'react';
 import * as Contacts from 'expo-contacts';
+
+export const ContactsContext = React.createContext();
 
 export const ContactSources = {
   ADDRESS_BOOK: 'ab',
@@ -42,6 +45,11 @@ export default class Contact {
     this.data.modified = new Date();
   }
 
+  update(updates) {
+    Object.assign(this.data, updates);
+    this.data.modified = new Date();
+  }
+
   serialize() {
     return JSON.stringify({
       i: this.id,
@@ -59,15 +67,19 @@ export default class Contact {
   static serializeList(l) {
     if (!l) {
       return JSON.stringify(l);
-    } else {
+    } else if (l.map) {
+      // older versions used a List of contacts vs new versions using an Object
       return JSON.stringify(l.map((c) => c.serialize()));
+    } else {
+      return JSON.stringify(Object.values(l).map((c) => c.serialize()));
     }
   }
 
   static deserializeList(str) {
     const l = JSON.parse(str);
     if (l) {
-      return l.map((c) => Contact.deserialize(c));
+      return Object.fromEntries(l.map((c) => Contact.deserialize(c))
+                                 .map((c) => [c.id, c])); // extract the keys 
     } else {
       return null;
     }

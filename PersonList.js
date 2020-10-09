@@ -2,9 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
 
+import { ContactsContext } from './contacts';
 import Person from './Person';
-
-export const ContactsContext = React.createContext();
 
 export default function PersonList() {
   return (
@@ -28,7 +27,7 @@ export default function PersonList() {
           </TouchableOpacity>
         </View>
         <FlatList style={styles.list}
-                  data={contacts}
+                  data={Object.values(contacts)}
                   renderItem={({item}) => <Person contact={item} />}
                   keyExtractor={(item) => item.id}
         />

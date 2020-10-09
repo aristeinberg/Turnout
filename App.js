@@ -4,9 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AsyncStorage } from 'react-native';
 import * as Contacts from 'expo-contacts';
 
-import Contact from './contacts';
+import Contact, { ContactsContext } from './contacts';
 import PersonDetails from './PersonDetail';
-import PersonList, { ContactsContext } from './PersonList';
+import PersonList from './PersonList';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
@@ -51,16 +51,16 @@ export default function App() {
         ],
       });
 
-      const filteredContacts = (
+      const filteredContacts = Object.fromEntries(
          data.filter(c => c.phoneNumbers &&
                           c.phoneNumbers.filter(p => p.digits && p.digits.match(PA_NUM_REGEX)).length > 0)
-             .map(c => Contact.fromAddressBook(c))
+             .map(c => [c.id, Contact.fromAddressBook(c)])
       );
 
       console.log(filteredContacts);
       setContacts(
-        [...contacts,
-         ...filteredContacts]
+        {...contacts,
+         ...filteredContacts}
       );
     }
   }
