@@ -34,12 +34,13 @@ function EmbedSocialMedia(props) {
   );
 }
 
-function PersonDetail(props) {
+function Birthday(props) {
   const [expandBirthday, setExpandBirthday] = useState(false);
   const [selectedDate, setSelectedDate] =
     useState(new Date(props.contact.data.birthYear || 2020,
                       props.contact.data.birthMonth || 0,
                       props.contact.data.birthDay || 1));
+
   const { updateContact } = useContext(ContactsContext);
 
   function toggleBirthday() {
@@ -54,25 +55,22 @@ function PersonDetail(props) {
   }
 
   return (
-    <View style={styles.personDetail}>
-      <Text style={styles.name}>
-        {props.contact.name}
-      </Text>
+    <View>{/* need this outer view just to give the whole thing a common parent, otherwise I'd skip it */}
       <View style={styles.personDetailRow}>
         <View style={{flex: 1}}>
-        <Text>
-          Birthday: {
-            expandBirthday ||
-            (props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown")
+          <Text>
+            Birthday: {
+              expandBirthday ||
+              (props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown")
+            }
+          </Text>
+          { expandBirthday &&
+            <DateTimePicker
+              mode="date"
+              onChange={(event, date) => setSelectedDate(date)}
+              value={selectedDate}
+            />
           }
-        </Text>
-        { expandBirthday &&
-          <DateTimePicker
-            mode="date"
-            onChange={(event, date) => setSelectedDate(date)}
-            value={selectedDate}
-          />
-        }
         </View>
         <TouchableOpacity style={styles.editableField} onPress={toggleBirthday}>
           <Text>
@@ -83,14 +81,31 @@ function PersonDetail(props) {
         </TouchableOpacity>
       </View>
       { expandBirthday && <EmbedSocialMedia contact={props.contact} />}
-      <View style={styles.personDetailRow}>
-        <Text>
-          County: { props.contact.data.county || "Unknown" }
-        </Text>
-        <TouchableOpacity style={styles.editableField}>
-          <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
-        </TouchableOpacity>
-      </View>
+    </View>
+  );
+}
+
+function County(props) {
+  return (
+    <View style={styles.personDetailRow}>
+      <Text>
+        County: { props.contact.data.county || "Unknown" }
+      </Text>
+      <TouchableOpacity style={styles.editableField}>
+        <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function PersonDetail(props) {
+  return (
+    <View style={styles.personDetail}>
+      <Text style={styles.name}>
+        {props.contact.name}
+      </Text>
+      <Birthday contact={props.contact} />
+      <County contact={props.contact} />
       <View style={styles.personDetailRow}>
         <Text>
           Voting status: { "Unknown" }
