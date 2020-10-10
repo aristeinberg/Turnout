@@ -1,8 +1,6 @@
 - [ ] dialog to choose where to import contacts from
   - [ ] manually enter a contact by typing in the info
 - In PersonDetails:
-  - [ ] enter/find county
-    - [ ] if you know what city they live in, we could tell you what county it's in
   - [ ] check voting status
     - [ ] open up https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx
     - [ ] ideally, we could scrape the info from this page
@@ -12,6 +10,7 @@
     - [ ] give some suggestions for what to text the person, based on their current vote status
 
 - advanced features:
+  - [ ] help you figure out what county they live in, e.g. by entering the city (or at least letting you choose from a drop-down/typeahead vs a plain text input)
   - [ ] try to scan your phone calendar for birthdates
   - [ ] figure out other places to import contacts from, e.g. facebook
   - [ ] improved phone address book import that allows you to choose which contacts to import rather than purely relying on PA area codes

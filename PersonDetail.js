@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import { WebView } from 'react-native-webview';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Contact, { ContactsContext } from './contacts';
+import { addExistingContactToGroupAsync } from 'expo-contacts';
 
 function EmbedSocialMedia(props) {
   const [socialMediaUrl, setSocialMediaUrl] = useState(null);
@@ -72,7 +73,7 @@ function Birthday(props) {
             />
           }
         </View>
-        <TouchableOpacity style={styles.editableField} onPress={toggleBirthday}>
+        <TouchableOpacity style={styles.button} onPress={toggleBirthday}>
           <Text>
             { expandBirthday ? "Save" :
                                 props.contact.data.birthDay ? "Edit" :
@@ -86,13 +87,27 @@ function Birthday(props) {
 }
 
 function County(props) {
+  const [expandCounty, setExpandCounty] = useState(false);
+  const [county, setCounty] = useState(props.contact.data.county);
+  const { updateContact } = useContext(ContactsContext);
+
+  function toggleCounty() {
+    if (expandCounty) {
+      updateContact(props.contact.id, {
+        county : county,
+      });
+    }
+    setExpandCounty(!expandCounty);
+  }
+
   return (
     <View style={styles.personDetailRow}>
       <Text>
-        County: { props.contact.data.county || "Unknown" }
+        County: { !expandCounty && (props.contact.data.county || "Unknown") }
       </Text>
-      <TouchableOpacity style={styles.editableField}>
-        <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
+      { expandCounty && <TextInput style={{borderWidth: 1, borderColor: 'gray', flex: 1 }} value={county} onChangeText={setCounty} /> }
+      <TouchableOpacity style={styles.button} onPress={toggleCounty}>
+        <Text>{ expandCounty ? "Save" : props.contact.data.county ? "Edit" : "Find" }</Text>
       </TouchableOpacity>
     </View>
   );
@@ -110,11 +125,11 @@ function PersonDetail(props) {
         <Text>
           Voting status: { "Unknown" }
         </Text>
-        <TouchableOpacity style={[styles.editableField, styles.disabled]}>
+        <TouchableOpacity style={[styles.button, styles.disabled]}>
           <Text>{ false ? "Update" : "Check" }</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={[styles.editableField, styles.warning]}>
+      <TouchableOpacity style={[styles.button, styles.warning]}>
         <Text style={styles.warning}>Delete contact</Text>
       </TouchableOpacity>
     </View>
@@ -147,7 +162,8 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
   },
-  editableField: {
+  button: {
+    marginLeft: 10,
     padding: 10,
     borderColor: 'black',
     borderWidth: 1,
