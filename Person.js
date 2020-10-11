@@ -4,9 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Person(props) {
   const navigation = useNavigation();
+  const nextStep = props.contact.getNextStep();
 
   function navigateToPersonDetails() {
     return navigation.navigate("Person Details", {contactId: props.contact.id});
+  }
+  function navigateToNextStep() {
+    return navigation.navigate(nextStep.page, {contactId: props.contact.id});
   }
 
   return (
@@ -25,9 +29,9 @@ export default function Person(props) {
         </View>
         <View style={styles.actions}>
           <TouchableOpacity
-            onPress={navigateToPersonDetails}
+            onPress={navigateToNextStep}
             style={styles.secondaryAction}>
-            <Text>{ props.contact.getNextStepStr() }</Text>
+            <Text>{ nextStep.label }</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -146,17 +146,17 @@ export default class Contact {
     }
   }
 
-  getNextStepStr() {
+  getNextStep() {
     if (!this.data.birthDay) {
-      return 'Find birthday';
+      return { page:'Edit Birthday', label: 'Find birthday'};
     }
     if (!this.data.county) {
-      return 'Find county';
+      return { page:'Edit County', label: 'Find county'};
     }
     if (!this.data.voteStatus) {
-      return 'Check voting status';
+      return { page:'Check Vote Status', label: 'Check voting status'};
     }
-    return 'Reach out';
+    return { page:'Reach out', label: 'Reach out'};
   }
 
   getFourDigitBirthYear() {
