@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import { ContactsContext } from './contacts';
+import { ContactsContext } from '../contacts';
 
 export default function VotingStatus({route}) {
   /*

@@ -5,11 +5,11 @@ import { AsyncStorage } from 'react-native';
 import * as Contacts from 'expo-contacts';
 
 import Contact, { ContactsContext } from './contacts';
-import PersonDetails from './PersonDetail';
-import EditBirthday from './EditBirthday';
-import EditCounty from './EditCounty';
-import CheckVoteStatus from './CheckVoteStatus';
-import PersonList from './PersonList';
+import PersonDetails from './pages/PersonDetail';
+import EditBirthday from './pages/EditBirthday';
+import EditCounty from './pages/EditCounty';
+import CheckVoteStatus from './pages/CheckVoteStatus';
+import PersonList from './pages/PersonList';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';

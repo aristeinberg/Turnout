@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { ContactsContext } from './contacts';
+import { ContactsContext } from '../contacts';
 
 function PersonDetail(props) {
   const navigation = useNavigation();

@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
-import { ContactsContext } from './contacts';
+import { ContactsContext } from '../contacts';
 
 function EmbedSocialMedia(props) {
   const [socialMediaUrl, setSocialMediaUrl] = useState(null);
