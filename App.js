@@ -10,6 +10,7 @@ import EditBirthday from './pages/EditBirthday';
 import EditCounty from './pages/EditCounty';
 import CheckVoteStatus from './pages/CheckVoteStatus';
 import PersonList from './pages/PersonList';
+import ReachOut from './pages/ReachOut';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
@@ -91,6 +92,7 @@ export default function App() {
           <Stack.Screen name="Edit Birthday" component={EditBirthday} />
           <Stack.Screen name="Edit County" component={EditCounty} />
           <Stack.Screen name="Check Vote Status" component={CheckVoteStatus} />
+          <Stack.Screen name="Reach Out" component={ReachOut} />
         </Stack.Navigator>
       </NavigationContainer>
     </ContactsContext.Provider>

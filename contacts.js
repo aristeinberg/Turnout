@@ -156,7 +156,7 @@ export default class Contact {
     if (!this.data.voteStatus) {
       return { page:'Check Vote Status', label: 'Check voting status'};
     }
-    return { page:'Reach out', label: 'Reach out'};
+    return { page:'Reach Out', label: 'Reach out'};
   }
 
   getFourDigitBirthYear() {
