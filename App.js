@@ -7,6 +7,7 @@ import * as Contacts from 'expo-contacts';
 import Contact, { ContactsContext } from './contacts';
 import PersonDetails from './PersonDetail';
 import EditBirthday from './EditBirthday';
+import EditCounty from './EditCounty';
 import CheckVoteStatus from './CheckVoteStatus';
 import PersonList from './PersonList';
 
@@ -88,6 +89,7 @@ export default function App() {
           <Stack.Screen name="Person List" component={PersonList} />
           <Stack.Screen name="Person Details" component={PersonDetails} />
           <Stack.Screen name="Edit Birthday" component={EditBirthday} />
+          <Stack.Screen name="Edit County" component={EditCounty} />
           <Stack.Screen name="Check Vote Status" component={CheckVoteStatus} />
         </Stack.Navigator>
       </NavigationContainer>

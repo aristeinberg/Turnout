@@ -4,38 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext } from './contacts';
 
-function County(props) {
-  const [expandCounty, setExpandCounty] = useState(false);
-  const [county, setCounty] = useState(props.contact.data.county);
-  const { updateContact } = useContext(ContactsContext);
-
-  function toggleCounty() {
-    if (expandCounty) {
-      updateContact(props.contact.id, {
-        county : county,
-      });
-    }
-    setExpandCounty(!expandCounty);
-  }
-
-  return (
-    <View style={styles.personDetailRow}>
-      <Text>
-        County: { !expandCounty && (props.contact.data.county || "Unknown") }
-      </Text>
-      { expandCounty && <TextInput style={{borderWidth: 1, borderColor: 'gray', flex: 1 }} value={county} onChangeText={setCounty} /> }
-      <TouchableOpacity style={styles.button} onPress={toggleCounty}>
-        <Text>{ expandCounty ? "Save" : props.contact.data.county ? "Edit" : "Find" }</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-  
 function PersonDetail(props) {
   const navigation = useNavigation();
 
   function navigateToEditBirthday() {
     return navigation.navigate("Edit Birthday", {contactId: props.contact.id});
+  }
+  function navigateToEditCounty() {
+    return navigation.navigate("Edit County", {contactId: props.contact.id});
   }
   function navigateToCheckVoteStatus() {
     return navigation.navigate("Check Vote Status", {contactId: props.contact.id});
@@ -61,7 +37,14 @@ function PersonDetail(props) {
           </Text>
         </TouchableOpacity>
       </View>
-      <County contact={props.contact} />
+      <View style={styles.personDetailRow}>
+        <Text>
+          County: { props.contact.data.county || "Unknown" }
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={navigateToEditCounty}>
+          <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.personDetailRow}>
         <Text>
           Voting status: { "Unknown" }
