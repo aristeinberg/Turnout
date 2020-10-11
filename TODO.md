@@ -1,16 +1,16 @@
 - [ ] dialog to choose where to import contacts from
   - [ ] manually enter a contact by typing in the info
 - In PersonDetails:
-  - [ ] check voting status
-    - [ ] open up https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx
-    - [ ] ideally, we could scrape the info from this page
-    - [ ] if scraping is not feasible, guide the user through what they need to enter as best as possible
-    - [ ] if scraping is not available, prompt the user to tell us what the vote status they saw was
+  - [ ] prompt the user to tell us what the vote status they saw was (or scrape it directly) and keep track of it
   - [ ] reach out to the contact
     - [ ] give some suggestions for what to text the person, based on their current vote status
 
 - advanced features:
-  - [ ] help you figure out what county they live in, e.g. by entering the city (or at least letting you choose from a drop-down/typeahead vs a plain text input)
+  - [ ] help you figure out what county they live in, e.g. by entering the city
   - [ ] try to scan your phone calendar for birthdates
   - [ ] figure out other places to import contacts from, e.g. facebook
   - [ ] improved phone address book import that allows you to choose which contacts to import rather than purely relying on PA area codes
+  - [ ] scrape the voter info directly off the embedded webview
+
+- bugs:
+  - [ ] if i try to auto-submit the PA ballot checker form, for some reason it gets into a refresh loop, so for now auto-submission is disabled.
