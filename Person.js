@@ -20,7 +20,7 @@ export default function Person(props) {
             {props.contact.getBirthdayStr()}
           </Text>
           <Text style={styles.detail}>
-            {props.contact.data.county}
+            {props.contact.getCountyName()}
           </Text>
         </View>
         <View style={styles.actions}>

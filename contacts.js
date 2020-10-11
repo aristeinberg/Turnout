@@ -9,6 +9,7 @@ export const ContactSources = {
 };
 
 export const COUNTIES = {
+  0: "Unknown",
   2290: "ADAMS",
   2291: "ALLEGHENY",
   2292: "ARMSTRONG",
@@ -209,9 +210,22 @@ export default class Contact {
 
   getCountyCode() {
     if (this.data.county) {
+      if (this.data.county in COUNTIES) {
+        return this.data.county;
+      }
       return COUNTY_CODES[this.data.county.toUpperCase()] || 0;
     }
     return 0;
+  }
+
+  getCountyName() {
+    if (this.data.county) {
+      if (this.data.county.toUpperCase() in COUNTY_CODES) {
+        return this.data.county;
+      }
+      return COUNTIES[this.data.county] || "";
+    }
+    return "";
   }
 
   static fromAddressBook(c) {

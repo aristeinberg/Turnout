@@ -39,7 +39,7 @@ function PersonDetail(props) {
       </View>
       <View style={styles.personDetailRow}>
         <Text>
-          County: { props.contact.data.county || "Unknown" }
+          County: { props.contact.getCountyName() }
         </Text>
         <TouchableOpacity style={styles.button} onPress={navigateToEditCounty}>
           <Text>{ props.contact.data.county ? "Edit" : "Find" }</Text>
