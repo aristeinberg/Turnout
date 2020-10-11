@@ -1,90 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
-import { WebView } from 'react-native-webview';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import Contact, { ContactsContext } from './contacts';
-import { addExistingContactToGroupAsync } from 'expo-contacts';
-
-function EmbedSocialMedia(props) {
-  const [socialMediaUrl, setSocialMediaUrl] = useState(null);
-
-  props.contact.lookupInAddressBook().then((abContact) => {
-    console.log(abContact);
-    if (!abContact['socialProfiles']) {
-      return;
-    }
-    for (const sp of abContact['socialProfiles']) {
-      if (sp['service'] == 'Facebook') {
-        setSocialMediaUrl(sp['url'].replace('http:', 'https:').replace('/www.', '/m.') + '/about');
-        return;
-      }
-    }
-  });
-
-  const url = socialMediaUrl ||
-    'https://www.facebook.com/search/top?q=' + encodeURIComponent(props.contact.name);
-  console.log('url is ', url)
-  return (
-    <View style={{ flexDirection: 'column', flex: 1, padding: 5 }}>
-      <Text>See if you can find their birthday on Facebook? (Look for "About" =&gt; "Basic Info")</Text>
-      <View style={{ borderWidth: 1, borderColor: 'gray', flex: 1, flexDirection: 'row', height: 400 }}>
-        <WebView source={{ uri: url }} sharedCookiesEnabled={true} />
-      </View>
-    </View>
-  );
-}
-
-function Birthday(props) {
-  const [expandBirthday, setExpandBirthday] = useState(false);
-  const [selectedDate, setSelectedDate] =
-    useState(new Date(props.contact.data.birthYear || 2020,
-                      props.contact.data.birthMonth || 0,
-                      props.contact.data.birthDay || 1));
-
-  const { updateContact } = useContext(ContactsContext);
-
-  function toggleBirthday() {
-    if (expandBirthday) {
-      updateContact(props.contact.id, {
-        birthYear: selectedDate.getYear(),
-        birthMonth: selectedDate.getMonth(),
-        birthDay: selectedDate.getDate()
-      });
-    }
-    setExpandBirthday(!expandBirthday);
-  }
-
-  return (
-    <View>{/* need this outer view just to give the whole thing a common parent, otherwise I'd skip it */}
-      <View style={styles.personDetailRow}>
-        <View style={{flex: 1}}>
-          <Text>
-            Birthday: {
-              expandBirthday ||
-              (props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown")
-            }
-          </Text>
-          { expandBirthday &&
-            <DateTimePicker
-              mode="date"
-              onChange={(event, date) => setSelectedDate(date)}
-              value={selectedDate}
-            />
-          }
-        </View>
-        <TouchableOpacity style={styles.button} onPress={toggleBirthday}>
-          <Text>
-            { expandBirthday ? "Save" :
-                                props.contact.data.birthDay ? "Edit" :
-                                                              "Find" }
-          </Text>
-        </TouchableOpacity>
-      </View>
-      { expandBirthday && <EmbedSocialMedia contact={props.contact} />}
-    </View>
-  );
-}
+import { ContactsContext } from './contacts';
 
 function County(props) {
   const [expandCounty, setExpandCounty] = useState(false);
@@ -112,82 +30,46 @@ function County(props) {
     </View>
   );
 }
+  
+function PersonDetail(props) {
+  const navigation = useNavigation();
 
-function VotingStatus(props) {
-  /*
-  // ideally could scrape this, but MVP will probably be simply a matter of
-  // embedding the webview
-
-  function checkStatus() {
-    const [firstName, lastName] = props.contact.name.split(" ");
-    fetch("https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx", {
-      "body": [
-        "ctl00%24ContentPlaceHolder1%24FirstNameText=", firstName,
-        "ctl00%24ContentPlaceHolder1%24LastNameText=", lastName,
-        "ctl00%24ContentPlaceHolder1%24DateOfBirthText=",
-        encodeURIComponent(props.contact.getShortBirthdayStr()),
-        "ctl00%24ContentPlaceHolder1%24CountyDropDown=2335", // TODO: lookup county
-        "ctl00%24ContentPlaceHolder1%24RetrieveButton=Submit",
-      ].join('&'),
-      "method": "POST",
-    }).then(response => console.log(response));
+  function navigateToEditBirthday() {
+    return navigation.navigate("Edit Birthday", {contactId: props.contact.id});
   }
-  */
-
-  const [expandVotingStatus, setExpandVotingStatus] = useState(false);
-  const { updateContact } = useContext(ContactsContext);
-  function toggleVotingStatus() {
-    if (expandVotingStatus) {
-      // save the vote status here if we could
-      //updateContact(props.contact.id, { });
-    }
-    setExpandVotingStatus(!expandVotingStatus);
+  function navigateToCheckVoteStatus() {
+    return navigation.navigate("Check Vote Status", {contactId: props.contact.id});
   }
 
-  const [firstName, lastName] = props.contact.name.split(" ");
-  const injectJs = `
-    (function() {
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$FirstNameText"].value = '${firstName}';
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$LastNameText"].value = '${lastName}';
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$DateOfBirthText"].value = '${props.contact.getShortBirthdayStr()}';
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$CountyDropDown"].value = '${props.contact.getCountyCode()}';
-      //document.forms["aspnetForm"].submit();
-    })();`;
+  navigation.setOptions({
+    title: props.contact.name,
+  })
 
   return (
-    <View>
+    <View style={styles.personDetail}>
+      <View style={styles.personDetailRow}>
+        <View style={{flex: 1}}>
+          <Text>
+            Birthday: {
+              (props.contact.data.birthYear ? props.contact.getBirthdayStr() : "Unknown")
+            }
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={navigateToEditBirthday}>
+          <Text>
+            {props.contact.data.birthDay ? "Edit" : "Find"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <County contact={props.contact} />
       <View style={styles.personDetailRow}>
         <Text>
           Voting status: { "Unknown" }
         </Text>
-        <TouchableOpacity style={[styles.button, styles.disabled]} onPress={toggleVotingStatus}>
+        <TouchableOpacity style={[styles.button, styles.disabled]} onPress={navigateToCheckVoteStatus}>
           <Text>{ false ? "Update" : "Check" }</Text>
         </TouchableOpacity>
       </View>
-      { expandVotingStatus && (
-        <View style={{ flexDirection: 'column', flex: 1, padding: 5 }}>
-          <Text>Look up their voter info here:</Text>
-          <View style={{ borderWidth: 1, height: 400, borderColor: 'gray', flex: 1, flexDirection: 'row' }}>
-            <WebView source={{ uri: "https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx"}}
-                    sharedCookiesEnabled={true}
-                    onMessage={(event) => {}}
-                    injectedJavaScript={injectJs} />
-          </View>
-        </View>
-      )}
-    </View>
-  );
-}
-
-function PersonDetail(props) {
-  return (
-    <View style={styles.personDetail}>
-      <Text style={styles.name}>
-        {props.contact.name}
-      </Text>
-      <Birthday contact={props.contact} />
-      <County contact={props.contact} />
-      <VotingStatus contact={props.contact} />
       <TouchableOpacity style={[styles.button, styles.warning]}>
         <Text style={styles.warning}>Delete contact</Text>
       </TouchableOpacity>
@@ -216,9 +98,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: 380, // TODO: this should be 100% but it causes weird issues
     padding: 10,
-  },
-  name: {
-    fontSize: 24,
   },
   button: {
     marginLeft: 10,

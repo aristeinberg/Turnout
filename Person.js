@@ -6,7 +6,7 @@ export default function Person(props) {
   const navigation = useNavigation();
 
   function navigateToPersonDetails() {
-    return navigation.navigate("PersonDetails", {contactId: props.contact.id});
+    return navigation.navigate("Person Details", {contactId: props.contact.id});
   }
 
   return (

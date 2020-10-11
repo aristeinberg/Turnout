@@ -6,6 +6,8 @@ import * as Contacts from 'expo-contacts';
 
 import Contact, { ContactsContext } from './contacts';
 import PersonDetails from './PersonDetail';
+import EditBirthday from './EditBirthday';
+import CheckVoteStatus from './CheckVoteStatus';
 import PersonList from './PersonList';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
@@ -82,9 +84,11 @@ export default function App() {
       updateContact: updateContact,
     }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="PersonList">
-          <Stack.Screen name="PersonList" component={PersonList} />
-          <Stack.Screen name="PersonDetails" component={PersonDetails} />
+        <Stack.Navigator initialRouteName="Person List">
+          <Stack.Screen name="Person List" component={PersonList} />
+          <Stack.Screen name="Person Details" component={PersonDetails} />
+          <Stack.Screen name="Edit Birthday" component={EditBirthday} />
+          <Stack.Screen name="Check Vote Status" component={CheckVoteStatus} />
         </Stack.Navigator>
       </NavigationContainer>
     </ContactsContext.Provider>
