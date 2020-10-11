@@ -2,8 +2,7 @@
   - [ ] manually enter a contact by typing in the info
 - In PersonDetails:
   - [ ] prompt the user to tell us what the vote status they saw was (or scrape it directly) and keep track of it
-  - [ ] reach out to the contact
-    - [ ] give some suggestions for what to text the person, based on their current vote status
+  - [ ] update default outreach templates depending on voter status
 
 - advanced features:
   - [ ] help you figure out what county they live in, e.g. by entering the city
