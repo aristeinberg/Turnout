@@ -8,6 +8,79 @@ export const ContactSources = {
   MANUAL: 'man',
 };
 
+export const COUNTIES = {
+  2290: "ADAMS",
+  2291: "ALLEGHENY",
+  2292: "ARMSTRONG",
+  2293: "BEAVER",
+  2294: "BEDFORD",
+  2295: "BERKS",
+  2296: "BLAIR",
+  2297: "BRADFORD",
+  2298: "BUCKS",
+  2299: "BUTLER",
+  2300: "CAMBRIA",
+  2301: "CAMERON",
+  2302: "CARBON",
+  2303: "CENTRE",
+  2304: "CHESTER",
+  2305: "CLARION",
+  2306: "CLEARFIELD",
+  2307: "CLINTON",
+  2308: "COLUMBIA",
+  2309: "CRAWFORD",
+  2310: "CUMBERLAND",
+  2311: "DAUPHIN",
+  2312: "DELAWARE",
+  2313: "ELK",
+  2314: "ERIE",
+  2315: "FAYETTE",
+  2316: "FOREST",
+  2317: "FRANKLIN",
+  2318: "FULTON",
+  2319: "GREENE",
+  2320: "HUNTINGDON",
+  2321: "INDIANA",
+  2322: "JEFFERSON",
+  2323: "JUNIATA",
+  2324: "LACKAWANNA",
+  2325: "LANCASTER",
+  2326: "LAWRENCE",
+  2327: "LEBANON",
+  2328: "LEHIGH",
+  2329: "LUZERNE",
+  2330: "LYCOMING",
+  2331: "McKEAN",
+  2332: "MERCER",
+  2333: "MIFFLIN",
+  2334: "MONROE",
+  2335: "MONTGOMERY",
+  2336: "MONTOUR",
+  2337: "NORTHAMPTON",
+  2338: "NORTHUMBERLAND",
+  2339: "PERRY",
+  2340: "PHILADELPHIA",
+  2341: "PIKE",
+  2342: "POTTER",
+  2343: "SCHUYLKILL",
+  2344: "SNYDER",
+  2345: "SOMERSET",
+  2346: "SULLIVAN",
+  2347: "SUSQUEHANNA",
+  2348: "TIOGA",
+  2349: "UNION",
+  2350: "VENANGO",
+  2351: "WARREN",
+  2352: "WASHINGTON",
+  2353: "WAYNE",
+  2354: "WESTMORELAND",
+  2355: "WYOMING",
+  2356: "YORK",
+};
+
+export const COUNTY_CODES = 
+  Object.fromEntries(Object.entries(COUNTIES).map(([k,v]) => [v, k]));
+
 export default class Contact {
   constructor(id, name, source, data) {
     if (id instanceof Contact) {
@@ -85,6 +158,13 @@ export default class Contact {
     return 'Reach out';
   }
 
+  getFourDigitBirthYear() {
+    if (this.data.birthYear) {
+      const addToYear = (this.data.birthYear < 1000 ? 1900 : 0);
+      return addToYear + this.data.birthYear;
+    }
+  }
+
   getBirthdayStr() {
     if (!this.data.birthDay) {
       return '';
@@ -105,10 +185,33 @@ export default class Contact {
     };
     let s = `${MONTHS[this.data.birthMonth]} ${this.data.birthDay}`;
     if (this.data.birthYear) {
-      const addToYear = (this.data.birthYear < 1000 ? 1900 : 0);
-      s += `, ${addToYear + this.data.birthYear}`;
+      s += `, ${this.getFourDigitBirthYear()}`;
     }
     return s;
+  }
+
+  getShortBirthdayStr() {
+    if (!this.data.birthYear) {
+      return '';
+    }
+    let month = String(this.data.birthMonth + 1);
+    if (month.length == 1) {
+      month = '0' + month;
+    }
+    let day = String(this.data.birthDay);
+    if (day.length == 1) {
+      day = '0' + day;
+    }
+    let year = String(this.getFourDigitBirthYear());
+    
+    return `${month}/${day}/${year}`;
+  }
+
+  getCountyCode() {
+    if (this.data.county) {
+      return COUNTY_CODES[this.data.county.toUpperCase()] || 0;
+    }
+    return 0;
   }
 
   static fromAddressBook(c) {
