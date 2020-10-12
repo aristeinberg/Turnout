@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { ContactsContext } from '../contacts';
+import { ContactsContext, VOTE_STATUSES } from '../contacts';
 
 export default function PersonDetails({route}) {
   const { contacts } = useContext(ContactsContext);
@@ -51,9 +51,11 @@ export default function PersonDetails({route}) {
         </TouchableOpacity>
       </View>
       <View style={styles.personDetailRow}>
-        <Text>
-          Voting status: { "Unknown" }
-        </Text>
+        <View style={{flex: 1}}>
+          <Text>
+            Voting status: { VOTE_STATUSES[contact.data.voteStatus] }
+          </Text>
+        </View>
         <TouchableOpacity style={[styles.button, styles.disabled]} onPress={navigateToCheckVoteStatus}>
           <Text>{ false ? "Update" : "Check" }</Text>
         </TouchableOpacity>

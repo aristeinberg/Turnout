@@ -1,32 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Picker, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { useNavigation } from '@react-navigation/native';
 
-import { ContactsContext } from '../contacts';
+import { ContactsContext, VOTE_STATUSES } from '../contacts';
 
 export default function VotingStatus({route}) {
-  /*
-  // ideally could scrape this, but MVP will probably be simply a matter of
-  // embedding the webview
-
-  function checkStatus() {
-    const [firstName, lastName] = contact.name.split(" ");
-    fetch("https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx", {
-      "body": [
-        "ctl00%24ContentPlaceHolder1%24FirstNameText=", firstName,
-        "ctl00%24ContentPlaceHolder1%24LastNameText=", lastName,
-        "ctl00%24ContentPlaceHolder1%24DateOfBirthText=",
-        encodeURIComponent(contact.getShortBirthdayStr()),
-        "ctl00%24ContentPlaceHolder1%24CountyDropDown=2335", // TODO: lookup county
-        "ctl00%24ContentPlaceHolder1%24RetrieveButton=Submit",
-      ].join('&'),
-      "method": "POST",
-    }).then(response => console.log(response));
-  }
-  */
-
   const { contacts, updateContact } = useContext(ContactsContext);
   const contact = contacts[route.params.contactId];
+  const [voteStatus, setVoteStatus] = useState(contact.data.voteStatus);
+  const navigation = useNavigation();
 
   const [firstName, lastName] = contact.name.split(" ");
   const injectJs = `
@@ -38,11 +21,24 @@ export default function VotingStatus({route}) {
       //document.forms["aspnetForm"].submit();
     })();`;
 
+  function save() {
+    updateContact(contact.id, { voteStatus : voteStatus, });
+    navigation.navigate("Person Details", {contactId: contact.id});
+  }
+
   return (
-    <View style={{ flexDirection: 'column', flex: 1, padding: 10 }}>
-      <Text>Voting status: { "Unknown" }</Text>
+    <View style={styles.view}>
+      <Text>Voting status: </Text>
+      <Picker selectedValue={voteStatus} onValueChange={setVoteStatus}>{
+        Object.entries(VOTE_STATUSES).map(([key,description]) => (
+          <Picker.Item label={description} value={key} />
+        ))
+      }</Picker>
+      <TouchableOpacity style={styles.button} onPress={save}>
+        <Text>Save</Text>
+      </TouchableOpacity>
       <Text>Look up their voter info here:</Text>
-      <View style={{ borderWidth: 1, borderColor: 'gray', flex: 1, margin: 5 }}>
+      <View style={styles.webview}>
         <WebView source={{ uri: "https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx"}}
                 sharedCookiesEnabled={true}
                 onMessage={(event) => {}}
@@ -51,3 +47,23 @@ export default function VotingStatus({route}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  view: {
+    flexDirection: 'column',
+    flex: 1,
+    padding: 10,
+  },
+  button: {
+    margin: 10,
+    padding: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  webview: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    flex: 1,
+    margin: 5,
+  },
+});
