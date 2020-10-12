@@ -73,8 +73,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     flex: 1,
-    flexDirection: 'row',
-    margin: 10,
+    margin: 5,
   },
   button: {
     margin: 10,

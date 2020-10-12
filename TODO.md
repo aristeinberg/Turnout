@@ -11,6 +11,7 @@
   - [ ] improved phone address book import that allows you to choose which contacts to import rather than purely relying on PA area codes
   - [ ] scrape the voter info directly off the embedded webview
   - [ ] virality: promote Turnout in the reachouts
+  - [ ] suggest multiple variants of reachouts and let the user choose which makes sense
 
 - bugs:
   - [ ] the Picker for vote status needs styling - impossible to read

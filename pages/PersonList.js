@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableWithoutFeedback, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext } from '../contacts';
@@ -43,25 +43,23 @@ function Person(props) {
 }
 
 export default function PersonList() {
-  const { contacts, importContacts, setContacts } = useContext(ContactsContext);
+  const { contacts, clearContacts } = useContext(ContactsContext);
+  const navigation = useNavigation();
+  function navigateToImportContacts() {
+    return navigation.navigate("Import Contacts");
+  }
+  navigation.setOptions({
+    headerRight: () => (
+      <Button
+        onPress={navigateToImportContacts}
+        title="Edit"
+        />
+    )
+  })
+
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>
-          Your contacts
-        </Text>
-        <TouchableOpacity
-          onPress={importContacts}
-          style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
-          <Text style={{ fontSize: 20, color: '#fff' }}>Import</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setContacts([])}
-          style={{ backgroundColor: 'grey', padding: 10, borderRadius: 5, marginHorizontal: 5 }}>
-          <Text style={{ fontSize: 20, color: '#fff' }}>Clear</Text>
-        </TouchableOpacity>
-      </View>
       <FlatList style={styles.list}
                 data={Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name))}
                 renderItem={({item}) => <Person contact={item} />}
