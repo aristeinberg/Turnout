@@ -5,9 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
 
 export default function PersonDetails({route}) {
-  const { contacts } = useContext(ContactsContext);
+  const { contacts, removeContact } = useContext(ContactsContext);
   const contact = contacts[route.params.contactId];
   const navigation = useNavigation();
+  if (!contact) {
+    navigation.navigate("Your Contacts");
+    return null;
+  }
 
   function navigateToEditBirthday() {
     return navigation.navigate("Edit Birthday", {contactId: contact.id});
@@ -20,6 +24,10 @@ export default function PersonDetails({route}) {
   }
   function navigateToReachOut() {
     return navigation.navigate("Reach Out", {contactId: contact.id});
+  }
+  function deleteContact() {
+    removeContact(contact.id);
+    return navigation.navigate("Your Contacts");
   }
 
   navigation.setOptions({
@@ -68,7 +76,7 @@ export default function PersonDetails({route}) {
           <Text>Reach out</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={[styles.button, styles.warning]}>
+      <TouchableOpacity style={[styles.button, styles.warning]} onPress={deleteContact}>
         <Text style={styles.warning}>Delete contact</Text>
       </TouchableOpacity>
     </View>

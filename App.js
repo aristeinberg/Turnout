@@ -56,6 +56,12 @@ export default function App() {
     });
   }
 
+  function removeContact(id) {
+    const newContacts = {...contacts};
+    delete newContacts[id];
+    setContacts(newContacts);
+  }
+
   function clearContacts() {
     setContacts({});
   }
@@ -66,6 +72,7 @@ export default function App() {
       clearContacts: clearContacts,
       addToContacts: addToContacts,
       updateContact: updateContact,
+      removeContact: removeContact,
     }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Your Contacts">
