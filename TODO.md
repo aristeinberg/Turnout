@@ -14,3 +14,4 @@
 - bugs:
   - [ ] the Picker for vote status needs styling - impossible to read
   - [ ] if i try to auto-submit the PA ballot checker form, for some reason it gets into a refresh loop, so for now auto-submission is disabled.
+  - [ ] after entering a single contact, it should jump straight to the single contact view but this causes a crash
