@@ -6,6 +6,7 @@ import * as Contacts from 'expo-contacts';
 import * as Random from 'expo-random';
 
 import Contact, { ContactsContext, ContactSources } from '../contacts';
+import { styles } from '../SharedStyles';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
@@ -13,11 +14,11 @@ const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
 function SaveCancelButtons(props) {
   return (
     <View style={{flexDirection: 'row'}}>
-      <TouchableOpacity onPress={props.onSave} style={styles.button}>
-        <Text style={styles.buttonText}>Save</Text>
+      <TouchableOpacity onPress={props.onSave} style={[styles.button, styles.large]}>
+        <Text style={styles.large}>Save</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={props.onCancel} style={[styles.button, styles.clearButton]}>
-        <Text style={styles.buttonText}>Cancel</Text>
+      <TouchableOpacity onPress={props.onCancel} style={[styles.button, styles.large]}>
+        <Text style={styles.large}>Cancel</Text>
       </TouchableOpacity>
     </View>
   );
@@ -160,8 +161,8 @@ export default function ImportContacts({route}) {
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={showExpandContactList} style={styles.button}>
-        <Text style={styles.buttonText}>Load contacts from phone</Text>
+      <TouchableOpacity onPress={showExpandContactList} style={[styles.button, styles.large]}>
+        <Text style={styles.large}>Load contacts from phone</Text>
       </TouchableOpacity>
       { expandContactList &&
         <View>
@@ -183,8 +184,8 @@ export default function ImportContacts({route}) {
           <SaveCancelButtons onSave={saveAddressImport} onCancel={cancelAddressImport} />
         </View>
       }
-      <TouchableOpacity onPress={() => setExpandSingleContact(true)} style={styles.button}>
-        <Text style={styles.buttonText}>Add a single contact</Text>
+      <TouchableOpacity onPress={() => setExpandSingleContact(true)} style={[styles.button, styles.large]}>
+        <Text style={styles.large}>Add a single contact</Text>
       </TouchableOpacity>
       { expandSingleContact &&
         <View>
@@ -193,8 +194,8 @@ export default function ImportContacts({route}) {
           <SaveCancelButtons onSave={saveSingleContact} onCancel={() => setExpandSingleContact(false)} />
         </View>
       }
-      <TouchableOpacity onPress={() => setExpandFacebook(!expandFacebook)} style={styles.button}>
-        <Text style={styles.buttonText}>Add from Facebook</Text>
+      <TouchableOpacity onPress={() => setExpandFacebook(!expandFacebook)} style={[styles.button, styles.large]}>
+        <Text style={styles.large}>Add from Facebook</Text>
       </TouchableOpacity>
       { expandFacebook &&
         <View>
@@ -229,36 +230,9 @@ export default function ImportContacts({route}) {
           <Text>Navigate to a Facebook profile to have it get added to your list.</Text>
         </View>
       }
-      <TouchableOpacity onPress={clearContactsAndGoBack} style={[styles.button, styles.clearButton]}>
-        <Text style={styles.buttonText}>Clear your saved contacts</Text>
+      <TouchableOpacity onPress={clearContactsAndGoBack} style={[styles.button, styles.large, styles.warning]}>
+        <Text style={[styles.large, styles.warning]}>Clear your saved contacts</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  webview: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    flexDirection: 'row',
-    height: 400,
-  },
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-  },
-  clearButton: {
-    backgroundColor: 'grey',
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#fff',
-  }
-});

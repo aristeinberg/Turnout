@@ -3,6 +3,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View, Picker } from 'rea
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, COUNTIES } from '../contacts';
+import { styles } from '../SharedStyles'
 
 export default function EditCounty({route}) {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ export default function EditCounty({route}) {
   }
 
   return (
-    <View style={{flexDirection: "column", flex: 1}}>
+    <View style={styles.container}>
       <Picker selectedValue={county} onValueChange={setCounty}>
         {
           Object.entries(COUNTIES).map(([num,name]) => (
@@ -30,12 +31,3 @@ export default function EditCounty({route}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    margin: 10,
-    padding: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-});

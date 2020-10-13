@@ -5,6 +5,7 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, ContactSources } from '../contacts';
+import { styles } from '../SharedStyles'
 
 function EmbedSocialMedia(props) {
   let defSMUrl = null;
@@ -77,18 +78,3 @@ export default function EditBirthday({route}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  webview: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    flex: 1,
-    margin: 5,
-  },
-  button: {
-    margin: 10,
-    padding: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-});

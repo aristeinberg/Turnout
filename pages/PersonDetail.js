@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { styles } from '../SharedStyles';
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
 
 export default function PersonDetails({route}) {
@@ -64,7 +65,7 @@ export default function PersonDetails({route}) {
             Voting status: { VOTE_STATUSES[contact.data.voteStatus] }
           </Text>
         </View>
-        <TouchableOpacity style={[styles.button, styles.disabled]} onPress={navigateToCheckVoteStatus}>
+        <TouchableOpacity style={styles.button} onPress={navigateToCheckVoteStatus}>
           <Text>{ false ? "Update" : "Check" }</Text>
         </TouchableOpacity>
       </View>
@@ -72,7 +73,7 @@ export default function PersonDetails({route}) {
         <Text>
           Last reached out: { "Unknown" }
         </Text>
-        <TouchableOpacity style={[styles.button, styles.disabled]} onPress={navigateToReachOut}>
+        <TouchableOpacity style={styles.button} onPress={navigateToReachOut}>
           <Text>Reach out</Text>
         </TouchableOpacity>
       </View>
@@ -82,31 +83,3 @@ export default function PersonDetails({route}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  personDetail: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 10,
-  },
-  personDetailRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    padding: 10,
-  },
-  button: {
-    padding: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-  disabled: {
-    borderColor: 'gray',
-    color: 'gray',
-  },
-  warning: {
-    borderColor: 'red',
-    color: 'red',
-  },
-});

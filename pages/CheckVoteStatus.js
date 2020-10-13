@@ -4,6 +4,7 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
+import { styles } from '../SharedStyles'
 
 export default function VotingStatus({route}) {
   const { contacts, updateContact } = useContext(ContactsContext);
@@ -27,15 +28,15 @@ export default function VotingStatus({route}) {
   }
 
   return (
-    <View style={styles.view}>
+    <View style={styles.container}>
       <Text>Voting status: </Text>
       <Picker selectedValue={voteStatus} onValueChange={setVoteStatus}>{
         Object.entries(VOTE_STATUSES).map(([key,description]) => (
           <Picker.Item label={description} value={key} />
         ))
       }</Picker>
-      <TouchableOpacity style={styles.button} onPress={save}>
-        <Text>Save</Text>
+      <TouchableOpacity style={[styles.button, styles.large]} onPress={save}>
+        <Text style={styles.large}>Save</Text>
       </TouchableOpacity>
       <Text>Look up their voter info here:</Text>
       <View style={styles.webview}>
@@ -47,23 +48,3 @@ export default function VotingStatus({route}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    flexDirection: 'column',
-    flex: 1,
-    padding: 10,
-  },
-  button: {
-    margin: 10,
-    padding: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-  webview: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    flex: 1,
-    margin: 5,
-  },
-});

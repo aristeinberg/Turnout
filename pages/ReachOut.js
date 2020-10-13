@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Communications from 'react-native-communications';
 
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
+import { styles } from '../SharedStyles'
 
 export default function ReachOut({route}) {
   const { contacts } = useContext(ContactsContext);
@@ -52,29 +53,14 @@ export default function ReachOut({route}) {
   }
 
   return (
-    <View style={styles.view}>
-      <Text style={styles.instructions} >You should tell { contact.name } something like this: "{ keyMessage }"</Text>
-      <TouchableOpacity style={styles.button} onPress={text}>
-        <Text>Text them</Text>
+    <View style={styles.container}>
+      <Text>You should tell { contact.name } something like this: "{ keyMessage }"</Text>
+      <TouchableOpacity style={[styles.button, styles.large]} onPress={text}>
+        <Text style={styles.large}>Text them</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={call}>
-        <Text>Call them</Text>
+      <TouchableOpacity style={[styles.button, styles.large]} onPress={call}>
+        <Text style={styles.large}>Call them</Text>
       </TouchableOpacity>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  view: {
-    padding: 10,
-  },
-  instructions: {
-  },
-  button: {
-    margin: 10,
-    padding: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-});
