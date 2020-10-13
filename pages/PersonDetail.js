@@ -10,6 +10,7 @@ export default function PersonDetails({route}) {
   const contact = contacts[route.params.contactId];
   const navigation = useNavigation();
   if (!contact) {
+    console.log('contact not there yet')
     navigation.navigate("Your Contacts");
     return null;
   }

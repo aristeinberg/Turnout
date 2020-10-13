@@ -24,6 +24,10 @@ function SaveCancelButtons(props) {
   );
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export default function ImportContacts({route}) {
   const { contacts, addToContacts, clearContacts } = useContext(ContactsContext);
   const [ expandContactList, setExpandContactList ] = useState(false);
@@ -88,6 +92,7 @@ export default function ImportContacts({route}) {
       [id]: new Contact(id, contactName, ContactSources.MANUAL),
     })
     setContactName('');
+    await sleep(250); // hack - make sure the person can save before navigating to their details
     navigation.navigate("Person Details", {contactId: id});
   }
 
@@ -95,9 +100,6 @@ export default function ImportContacts({route}) {
   let fbRef = null; // this will point to the fb webview
   const facebookUrl = 'https://m.facebook.com/search/top/?q=friends%20who%20live%20in%20pennsylvania&ref=content_filter&source=typeahead'
   async function handleFbNavStateChange(newNavState) {
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
     // wait a couple of seconds to make sure the page has loaded
     await sleep(1000);
     
@@ -155,7 +157,7 @@ export default function ImportContacts({route}) {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} keyboardShouldPersistTaps='handled'>
       <TouchableOpacity onPress={showExpandContactList} style={[styles.button, styles.large]}>
         <Text style={styles.large}>Load contacts from phone</Text>
       </TouchableOpacity>
@@ -185,6 +187,9 @@ export default function ImportContacts({route}) {
       { expandSingleContact &&
         <View>
           <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
+                autoFocus={true} autoCorrect={false}
+                onSubmitEditing={saveSingleContact}
+                placeholder="Name"
                 value={contactName} onChangeText={setContactName} />
           <SaveCancelButtons onSave={saveSingleContact} onCancel={() => setExpandSingleContact(false)} />
         </View>
