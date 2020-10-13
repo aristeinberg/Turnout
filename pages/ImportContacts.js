@@ -87,24 +87,19 @@ export default function ImportContacts({route}) {
     addToContacts({
       [id]: new Contact(id, contactName, ContactSources.MANUAL),
     })
-    // TODO:
-    // Ideally, we would like to go straight to that person's details page. The
-    // problem is, navigation happens before the state gets updated to include
-    // the new contact and so this crashes.
-    //navigation.navigate("Person Details", {contactId: id});
-    navigation.navigate("Your Contacts");
+    setContactName('');
+    navigation.navigate("Person Details", {contactId: id});
   }
 
   const [ expandFacebook, setExpandFacebook ] = useState(false);
   let fbRef = null; // this will point to the fb webview
-  //const facebookUrl = 'https://m.facebook.com/search/top/?q=friends%20who%20live%20in%20pennsylvania&ref=content_filter&source=typeahead'
-  const facebookUrl = 'https://m.facebook.com/';
+  const facebookUrl = 'https://m.facebook.com/search/top/?q=friends%20who%20live%20in%20pennsylvania&ref=content_filter&source=typeahead'
   async function handleFbNavStateChange(newNavState) {
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
     // wait a couple of seconds to make sure the page has loaded
-    await sleep(2000);
+    await sleep(1000);
     
     const {url, title, data} = newNavState;
     const [command, url2, name] = (data || '').split('||');
@@ -207,6 +202,12 @@ export default function ImportContacts({route}) {
                      sharedCookiesEnabled={true}
                      onMessage={(event) => handleFbNavStateChange(event.nativeEvent)}
                      onNavigationStateChange={handleFbNavStateChange}
+                     /* 
+                      * facebook doesn't trigger full page loads when you
+                      * navigate around. hence, need to hack the react webview
+                      * to get it to trigger navigation events.
+                      * i found the below code here:
+                     https://github.com/react-native-webview/react-native-webview/issues/24 */
                      injectedJavaScript={`
                      (function() {
                        function wrap(fn) {
