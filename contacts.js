@@ -6,6 +6,7 @@ export const ContactsContext = React.createContext();
 export const ContactSources = {
   ADDRESS_BOOK: 'ab',
   MANUAL: 'man',
+  FACEBOOK: 'fb',
 };
 
 export const COUNTIES = {

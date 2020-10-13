@@ -4,14 +4,24 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
-import { ContactsContext } from '../contacts';
+import { ContactsContext, ContactSources } from '../contacts';
 
 function EmbedSocialMedia(props) {
-  const [socialMediaUrl, setSocialMediaUrl] = useState(null);
+  let defSMUrl = null;
+  if (props.contact.source == ContactSources.FACEBOOK) {
+    // for FB imported contacts, we use their profile URL as the id!
+    if (props.contact.id.includes('?')) {
+      defSMUrl = props.contact.id;
+    } else {
+      defSMUrl = props.contact.id + '/about';
+    }
+  }
+
+  const [socialMediaUrl, setSocialMediaUrl] = useState(defSMUrl);
 
   props.contact.lookupInAddressBook().then((abContact) => {
     console.log(abContact);
-    if (!abContact['socialProfiles']) {
+    if (!abContact || !abContact['socialProfiles']) {
       return;
     }
     for (const sp of abContact['socialProfiles']) {

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, TextInput } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { WebView } from 'react-native-webview';
 import * as Contacts from 'expo-contacts';
 import * as Random from 'expo-random';
 
@@ -81,7 +82,7 @@ export default function ImportContacts({route}) {
     // TODO: wanted to use uuid but apparently it doesn't work in expo?
     // hopefully this will be good enough...
     id = String(Random.getRandomBytes(8));
-    console.log(id);
+    console.log('save', id);
     addToContacts({
       [id]: new Contact(id, contactName, ContactSources.MANUAL),
     })
@@ -91,6 +92,43 @@ export default function ImportContacts({route}) {
     // the new contact and so this crashes.
     //navigation.navigate("Person Details", {contactId: id});
     navigation.navigate("Your Contacts");
+  }
+
+  const [ expandFacebook, setExpandFacebook ] = useState(false);
+  let fbRef = null; // this will point to the fb webview
+  //const facebookUrl = 'https://m.facebook.com/search/top/?q=friends%20who%20live%20in%20pennsylvania&ref=content_filter&source=typeahead'
+  const facebookUrl = 'https://m.facebook.com/';
+  async function handleFbNavStateChange(newNavState) {
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    // wait a couple of seconds to make sure the page has loaded
+    await sleep(2000);
+    
+    const {url, title, data} = newNavState;
+    const [command, url2, name] = (data || '').split('||');
+    console.log('callback', command, url, url2, name);
+    if (command == 'PROF') {
+      addToContacts({
+        [url]: new Contact(url2, name, ContactSources.FACEBOOK),
+      });
+      console.log('Added contact: ', url, url2, name);
+      alert('Added contact: ' + name);
+      return;
+    }
+    if (url.includes('/search/top/')) {
+      fbRef.injectJavaScript(`document.querySelectorAll('[aria-label*="See All"]')[0].click()`);
+      return;
+    }
+    fbRef.injectJavaScript(`(function() {
+      if (document.querySelectorAll('[data-sigil="timeline-cover"]').length == 1) {
+      window.ReactNativeWebView.postMessage('PROF||' + window.location.href + '||' + 
+        document.querySelectorAll('[data-sigil="MBackNavBarClick"]')[0].innerText);
+    } else {
+      //window.ReactNativeWebView.postMessage('TEST||HI||BYE');
+    }
+    return true;
+  })();`);
   }
 
   function ContactList(props) {
@@ -121,7 +159,7 @@ export default function ImportContacts({route}) {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TouchableOpacity onPress={showExpandContactList} style={styles.button}>
         <Text style={styles.buttonText}>Load contacts from phone</Text>
       </TouchableOpacity>
@@ -155,14 +193,56 @@ export default function ImportContacts({route}) {
           <SaveCancelButtons onSave={saveSingleContact} onCancel={() => setExpandSingleContact(false)} />
         </View>
       }
+      <TouchableOpacity onPress={() => setExpandFacebook(!expandFacebook)} style={styles.button}>
+        <Text style={styles.buttonText}>Add from Facebook</Text>
+      </TouchableOpacity>
+      { expandFacebook &&
+        <View>
+          <View style={styles.webview}>
+            <WebView style={{flex: 0, height: 400}}
+                     automaticallyAdjustContentInsets={false}
+                     ref={ref => (fbRef = ref)}
+                     source={{ uri: facebookUrl }}
+                     sharedCookiesEnabled={true}
+                     onMessage={(event) => handleFbNavStateChange(event.nativeEvent)}
+                     onNavigationStateChange={handleFbNavStateChange}
+                     injectedJavaScript={`
+                     (function() {
+                       function wrap(fn) {
+                         return function wrapper() {
+                           var res = fn.apply(this, arguments);
+                           window.ReactNativeWebView.postMessage('navigationStateChange');
+                           return res;
+                         }
+                       }
+                 
+                       history.pushState = wrap(history.pushState);
+                       history.replaceState = wrap(history.replaceState);
+                       window.addEventListener('popstate', function() {
+                         window.ReactNativeWebView.postMessage('navigationStateChange');
+                       });
+                     })();
+                     true;
+                   `}
+            />
+          </View>
+          <Text>Navigate to a Facebook profile to have it get added to your list.</Text>
+        </View>
+      }
       <TouchableOpacity onPress={clearContactsAndGoBack} style={[styles.button, styles.clearButton]}>
         <Text style={styles.buttonText}>Clear your saved contacts</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  webview: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    flexDirection: 'row',
+    height: 400,
+  },
   container: {
     flex: 1,
     padding: 10,
