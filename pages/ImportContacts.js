@@ -1,16 +1,32 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Contacts from 'expo-contacts';
+import * as Random from 'expo-random';
 
-import Contact, { ContactsContext } from '../contacts';
+import Contact, { ContactsContext, ContactSources } from '../contacts';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
 
+function SaveCancelButtons(props) {
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <TouchableOpacity onPress={props.onSave} style={styles.button}>
+        <Text style={styles.buttonText}>Save</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={props.onCancel} style={[styles.button, styles.clearButton]}>
+        <Text style={styles.buttonText}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 export default function ImportContacts({route}) {
   const { contacts, addToContacts, clearContacts } = useContext(ContactsContext);
   const [ expandContactList, setExpandContactList ] = useState(false);
+  const [ expandSingleContact, setExpandSingleContact ] = useState(false);
+  const [ contactName, setContactName ] = useState('');
   const [ addressBook, setAddressBook ] = useState({});
   const [ selectedContacts, setSelectedContacts ] = useState({});
   const navigation = useNavigation();
@@ -43,11 +59,9 @@ export default function ImportContacts({route}) {
     }
   }
 
-  function toggleExpandContactList() {
-    if (!expandContactList) {
-      console.log('importing contacts')
-      importContacts();
-    }
+  function showExpandContactList() {
+    console.log('importing contacts')
+    importContacts();
     setExpandContactList(true);
   }
   function saveAddressImport() {
@@ -61,6 +75,21 @@ export default function ImportContacts({route}) {
   }
   function clearContactsAndGoBack() {
     clearContacts();
+    navigation.navigate("Your Contacts");
+  }
+  async function saveSingleContact() {
+    // TODO: wanted to use uuid but apparently it doesn't work in expo?
+    // hopefully this will be good enough...
+    id = String(Random.getRandomBytes(8));
+    console.log(id);
+    addToContacts({
+      [id]: new Contact(id, contactName, ContactSources.MANUAL),
+    })
+    // TODO:
+    // Ideally, we would like to go straight to that person's details page. The
+    // problem is, navigation happens before the state gets updated to include
+    // the new contact and so this crashes.
+    //navigation.navigate("Person Details", {contactId: id});
     navigation.navigate("Your Contacts");
   }
 
@@ -93,7 +122,7 @@ export default function ImportContacts({route}) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={toggleExpandContactList} style={styles.button}>
+      <TouchableOpacity onPress={showExpandContactList} style={styles.button}>
         <Text style={styles.buttonText}>Load contacts from phone</Text>
       </TouchableOpacity>
       { expandContactList &&
@@ -113,14 +142,17 @@ export default function ImportContacts({route}) {
             </View>
           </View>
           <Text>(By default, we selected people with PA area codes.)</Text>
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity onPress={saveAddressImport} style={styles.button}>
-              <Text style={styles.buttonText}>Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={cancelAddressImport} style={[styles.button, styles.clearButton]}>
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
+          <SaveCancelButtons onSave={saveAddressImport} onCancel={cancelAddressImport} />
+        </View>
+      }
+      <TouchableOpacity onPress={() => setExpandSingleContact(true)} style={styles.button}>
+        <Text style={styles.buttonText}>Add a single contact</Text>
+      </TouchableOpacity>
+      { expandSingleContact &&
+        <View>
+          <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
+                value={contactName} onChangeText={setContactName} />
+          <SaveCancelButtons onSave={saveSingleContact} onCancel={() => setExpandSingleContact(false)} />
         </View>
       }
       <TouchableOpacity onPress={clearContactsAndGoBack} style={[styles.button, styles.clearButton]}>

@@ -1,4 +1,3 @@
-- [ ] manually enter a contact by typing in the info
 - [ ] display the time the vote status was last updated
 - [ ] track when you last reached out
 - [ ] analytics?? would be nice to track impact in some way!
