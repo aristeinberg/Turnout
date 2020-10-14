@@ -8,7 +8,7 @@ Drive Turnout helps you make sure your friends' votes count. You can use
 state-wide web sites to check whether your friends have already voted and, if
 so, to make sure that their ballots were processed successfully.
 
-## A note about privacy:
+### A note about privacy
 
 The Drive Turnout app runs entirely on your phone - we only track anonymous
 usage information. No private information is shared back to our servers. The
