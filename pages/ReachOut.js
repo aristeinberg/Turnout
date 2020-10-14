@@ -54,7 +54,11 @@ export default function ReachOut({route}) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 16 }}>You should tell { contact.name } something like this: </Text>
+      <Text style={{ fontSize: 16 }}>
+        You should tell 
+        <Text style={{ fontWeight: 'bold' }}> { contact.name } </Text>
+        something like this:
+      </Text>
       <View style={styles.messagePreview}><Text>{ keyMessage }</Text></View>
       <TouchableOpacity style={[styles.button, styles.large]} onPress={text}>
         <Text style={styles.large}>Text them</Text>

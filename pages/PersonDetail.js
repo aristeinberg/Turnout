@@ -41,9 +41,7 @@ export default function PersonDetails({route}) {
       <View style={styles.personDetailRow}>
         <View style={{flex: 1}}>
           <Text>
-            Birthday: {
-              (contact.data.birthYear ? contact.getBirthdayStr() : "Unknown")
-            }
+            Birthday: { contact.getBirthdayStr() }
           </Text>
         </View>
         <TouchableOpacity style={styles.button} onPress={navigateToEditBirthday}>

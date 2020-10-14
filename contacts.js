@@ -160,7 +160,7 @@ export default class Contact {
   }
 
   getNextStep() {
-    if (!this.data.birthDay) {
+    if (!this.data.birthYear) {
       return { page:'Edit Birthday', label: 'Find birthday'};
     }
     if (!this.data.county) {
