@@ -1,6 +1,3 @@
-- [ ] splash screen
-- [ ] colorize menu
-- [ ] bug: if you change counties on the PA site, it refreshes the webview
 - [ ] display the time the vote status was last updated
 - [ ] track when you last reached out, take notes on the result and/or update their vote status
 - [ ] analytics?? would be nice to track impact in some way!
@@ -15,4 +12,4 @@
 - bugs:
   - [ ] the Picker for vote status needs styling - impossible to read
   - [ ] if i try to auto-submit the PA ballot checker form, for some reason it gets into a refresh loop, so for now auto-submission is disabled.
-  - [ ] after entering a single contact, it should jump straight to the single contact view but this causes a crash
+    - [ ] (probably related), if you change counties on the PA site, it refreshes the webview and undoes your change

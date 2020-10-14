@@ -75,7 +75,16 @@ export default function App() {
       removeContact: removeContact,
     }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Your Contacts">
+        <Stack.Navigator initialRouteName="Your Contacts"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#55dff1',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }} >
           <Stack.Screen name="Your Contacts" component={PersonList} />
           <Stack.Screen name="Import Contacts" component={ImportContacts} />
           <Stack.Screen name="Person Details" component={PersonDetails} />

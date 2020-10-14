@@ -55,6 +55,7 @@ export default function PersonList() {
     headerRight: () => (
       <Button
         onPress={navigateToImportContacts}
+        color='#fff'
         title={Object.keys(contacts).length == 0 ? "Add" : "Edit"}
         />
     )
@@ -100,7 +101,7 @@ export default function PersonList() {
                     )}
           />
       )}
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </View>
   );
 }
