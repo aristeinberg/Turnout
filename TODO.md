@@ -1,3 +1,6 @@
+- [ ] splash screen
+- [ ] colorize menu
+- [ ] NUX: point people to import contacts
 - [ ] display the time the vote status was last updated
 - [ ] track when you last reached out, take notes on the result and/or update their vote status
 - [ ] analytics?? would be nice to track impact in some way!
