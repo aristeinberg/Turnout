@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Picker, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Picker, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,14 +13,30 @@ export default function VotingStatus({route}) {
   const navigation = useNavigation();
 
   const [firstName, lastName] = contact.name.split(" ");
-  const injectJs = `
-    (function() {
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$FirstNameText"].value = '${firstName}';
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$LastNameText"].value = '${lastName}';
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$DateOfBirthText"].value = '${contact.getShortBirthdayStr()}';
-      document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$CountyDropDown"].value = '${contact.getCountyCode()}';
-      //document.forms["aspnetForm"].submit();
-    })();`;
+
+  let webref = null;
+  let instrumented = false;
+  function handleStateChange(data) {
+    // for some reason just using injectedJavascript was causing the code to get
+    // run multiple times. instead we inject when the page completes loading and
+    // only once.
+
+    // wait til it's done loading
+    if (data.loading) return;
+
+    const injectJs = `
+      (function() {
+        document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$FirstNameText"].value = '${firstName}';
+        document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$LastNameText"].value = '${lastName}';
+        document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$DateOfBirthText"].value = '${contact.getShortBirthdayStr()}';
+        document.forms["aspnetForm"]["ctl00$ContentPlaceHolder1$CountyDropDown"].value = '${contact.getCountyCode()}';
+        //document.forms["aspnetForm"].submit();
+      })();`;
+      if (!instrumented) {
+        webref.injectJavaScript(injectJs);
+      }
+      instrumented = true;
+  }
 
   function save() {
     updateContact(contact.id, { voteStatus : voteStatus, });
@@ -28,8 +44,17 @@ export default function VotingStatus({route}) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>Voting status: </Text>
+    <ScrollView style={styles.container}>
+      <Text>Use this page to check on their ballot status: </Text>
+      <View style={[styles.webview, {margin: 10, height: 300}]}>
+        <WebView source={{ uri: "https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx"}}
+                ref={(r) => (webref = r)}
+                sharedCookiesEnabled={true}
+                onMessage={(event) => {}}
+                onNavigationStateChange={handleStateChange}
+                /*injectedJavaScript={injectJs}*/ />
+      </View>
+      <Text>Select the status you see above from this list:</Text>
       <Picker selectedValue={voteStatus} onValueChange={setVoteStatus}>{
         Object.entries(VOTE_STATUSES).map(([key,description]) => (
           <Picker.Item label={description} value={key} />
@@ -38,13 +63,6 @@ export default function VotingStatus({route}) {
       <TouchableOpacity style={[styles.button, styles.large]} onPress={save}>
         <Text style={styles.large}>Save</Text>
       </TouchableOpacity>
-      <Text>Look up their voter info here:</Text>
-      <View style={styles.webview}>
-        <WebView source={{ uri: "https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx"}}
-                sharedCookiesEnabled={true}
-                onMessage={(event) => {}}
-                injectedJavaScript={injectJs} />
-      </View>
-    </View>
+    </ScrollView>
   );
 }

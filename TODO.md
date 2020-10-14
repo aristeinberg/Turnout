@@ -4,6 +4,7 @@
   - [ ] track facebook login status and present a different url/UI for logging in the first time
 
 - polish:
+  - [ ] searchbox for adding contacts from your phone contact list
   - [ ] help you figure out what county they live in:
      - [ ] lookup from a city 
      - [ ] show their FB profile to find their city
@@ -19,8 +20,6 @@
      - [ ] track when you last reached out, take notes on the result and/or update their vote status
 
 - bugs:
-  - [ ] the Picker for vote status needs styling - impossible to read
   - [ ] fix styling on webviews to fit more naturally into the page
   - [ ] if i try to auto-submit the PA ballot checker form, for some reason it gets into a refresh loop, so for now auto-submission is disabled.
-    - [ ] (probably related), if you change counties on the PA site, it refreshes the webview and undoes your change
   - [ ] is the back nav button missing its "<"?

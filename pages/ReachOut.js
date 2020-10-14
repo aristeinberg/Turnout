@@ -17,23 +17,17 @@ export default function ReachOut({route}) {
     case 'VBM_SENT_BY_OFFICE':
       keyMessage += "It looks like your mail ballot was sent over to you - did you receive it yet?"
       break;
-    case 'VBM_RECEIVED_BY_VOTER':
-      keyMessage += "I know you got that mail ballot. Did you have a chance to send it back in yet?"
-      break;
-    case 'VBM_SENT_BACK':
-      keyMessage += "It looks like the office still hasn't received your mail ballot. Are you SURE you sent it?"
-      break;
     case 'VBM_RECEIVED_BY_OFFICE':
       keyMessage += "Great job getting your mail ballot back. Did you remember the privacy envelope?"
       break;
-    case 'PLANS_TO_VOTE':
-      keyMessage += "Still on track to vote? Are you going to vote early?"
+    case 'NO_VBM':
+      keyMessage += "Are you voting in person this year? When are you going to do it?"
       break;
-    case 'VOTED_BUT_NOT_COUNTED':
-      keyMessage += "Thanks for voting! For some reason the web site still indicates that your vote has not counted. Do you need help figuring this out? Maybe consider a provisional ballot?"
+    case 'VBM_PROBLEM':
+      keyMessage += "It looks like there was a problem with your ballot. Do you need help getting this sorted out?"
       break;
     case 'VOTE_COUNTED':
-      keyMessage += "Great job voting! Are you open to helping me try to get other people to turn out?"
+      keyMessage += "I see you successfully voted - great job! Are you open to helping me try to get other people to turn out?"
       break;
     case 'UNKNOWN':
     default:

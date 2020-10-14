@@ -85,14 +85,12 @@ export const COUNTY_CODES =
 
 export const VOTE_STATUSES = {
   UNKNOWN: 'Unknown',
-  VBM_REQUESTED: 'Voter requested mail ballot',
-  VBM_SENT_BY_OFFICE: 'Mail ballot was sent to voter but they have not received it yet',
-  VBM_RECEIVED_BY_VOTER: 'Mail ballot received by voter but not sent back',
-  VBM_SENT_BACK: 'Voter indicates mail ballot sent back',
-  VBM_RECEIVED_BY_OFFICE: 'Mail ballot sent back and received by office',
-  PLANS_TO_VOTE: 'Voter indicates a plan to vote in person',
-  VOTED_BUT_NOT_COUNTED: 'The person indicates they have voted but this is not reflected on the PA site',
-  VOTE_COUNTED: 'The person voted successfully, as reflected on the site',
+  NO_VBM: 'Mail ballot not requested',
+  VBM_REQUESTED: 'Ballot requested, not yet mailed',
+  VBM_SENT_BY_OFFICE: 'Ballot mailed to voter',
+  VBM_RECEIVED_BY_OFFICE: 'Ballot received by office',
+  VBM_PROBLEM: 'Vote not recorded due to problem',
+  VOTE_COUNTED: 'Vote recorded successfully',
 }
 
 export default class Contact {
