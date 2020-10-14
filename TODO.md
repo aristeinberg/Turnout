@@ -1,15 +1,27 @@
-- [ ] display the time the vote status was last updated
-- [ ] track when you last reached out, take notes on the result and/or update their vote status
-- [ ] analytics?? would be nice to track impact in some way!
+- next steps:
+  - [ ] analytics?? would be nice to track impact in some way!
+  - [ ] switch UI to reduce the number of "buttons" and instead more closely resemble the phone contact UI with list items and highlighting on touch
+     - [ ] home contact list could show "next steps" rather than listing random details
+  - [ ] track facebook login status and present a different url/UI for logging in the first time
 
-- advanced features:
-  - [ ] help you figure out what county they live in, e.g. by entering the city or showing their FB profile
-  - [ ] try to scan your phone calendar for birthdates
-  - [ ] scrape the voter info directly off the embedded webview
-  - [ ] virality: promote Turnout in the reachouts
-  - [ ] suggest multiple variants of reachouts and let the user choose which makes sense
+- polish:
+  - [ ] help you figure out what county they live in:
+     - [ ] lookup from a city 
+     - [ ] show their FB profile to find their city
+     - [ ] check the phone address book for a city/address
+  - [ ] help figuring out birthdays:
+     - [ ] automatically navigate the facebook profile to the basic info section
+     - [ ] try to scan your phone calendar for birthdates
+  - [ ] help contacting people
+     - [ ] match up facebook contacts with address book entries to find phone number
+     - [ ] link/webview to contact on FB messenger
+  - [ ] separate out the concept of vote status reported by web site from vote status reported by reaching out
+     - [ ] display the time the vote status was last updated
+     - [ ] track when you last reached out, take notes on the result and/or update their vote status
 
 - bugs:
   - [ ] the Picker for vote status needs styling - impossible to read
+  - [ ] fix styling on webviews to fit more naturally into the page
   - [ ] if i try to auto-submit the PA ballot checker form, for some reason it gets into a refresh loop, so for now auto-submission is disabled.
     - [ ] (probably related), if you change counties on the PA site, it refreshes the webview and undoes your change
+  - [ ] is the back nav button missing its "<"?
