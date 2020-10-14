@@ -1,4 +1,4 @@
-## A note about privacy:
+## A note about privacy
 
 The Drive Turnout app runs entirely on your phone - we only track anonymous
 usage information. No private information is shared back to our servers. The
