@@ -1,7 +1,6 @@
 - next steps:
   - [ ] analytics?? would be nice to track impact in some way!
   - [ ] switch UI to reduce the number of "buttons" and instead more closely resemble the phone contact UI with list items and highlighting on touch
-     - [ ] home contact list could show "next steps" rather than listing random details
   - [ ] track facebook login status and present a different url/UI for logging in the first time
 
 - polish:

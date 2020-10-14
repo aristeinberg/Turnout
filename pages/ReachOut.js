@@ -9,7 +9,7 @@ export default function ReachOut({route}) {
   const { contacts } = useContext(ContactsContext);
   const contact = contacts[route.params.contactId];
 
-  let keyMessage = "Hi, I'm really concerned about this election so I am checking the vote status of all my friends in PA through an app called Turnout.\n\n";
+  let keyMessage = "Hi, I'm concerned about this election so have been checking the vote status of my friends in PA through an app called Drive Turnout.\n\n";
   switch (contact.data.voteStatus) {
     case 'VBM_REQUESTED':
       keyMessage += "I see you requested a mail ballot, keep your eyes out for it! And don't forget the privacy envelope.";
@@ -54,7 +54,8 @@ export default function ReachOut({route}) {
 
   return (
     <View style={styles.container}>
-      <Text>You should tell { contact.name } something like this: "{ keyMessage }"</Text>
+      <Text style={{ fontSize: 16 }}>You should tell { contact.name } something like this: </Text>
+      <View style={styles.messagePreview}><Text>{ keyMessage }</Text></View>
       <TouchableOpacity style={[styles.button, styles.large]} onPress={text}>
         <Text style={styles.large}>Text them</Text>
       </TouchableOpacity>

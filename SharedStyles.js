@@ -61,7 +61,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    margin: 10,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#888',
   },
   personDetails: {
     flexDirection: 'column',
@@ -69,12 +71,12 @@ export const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
+    fontWeight: 'bold',
   },
   details: {
     fontSize: 14,
   },
   actions: {
-    flexDirection: 'row',
   },
   action: {
     paddingHorizontal: 10,
@@ -87,4 +89,10 @@ export const styles = StyleSheet.create({
     padding: 10,
     fontStyle: 'italic',
   },
+  messagePreview: {
+    borderLeftWidth: 1,
+    borderColor: '#888',
+    paddingLeft: 10,
+    margin: 10,
+  }
 });

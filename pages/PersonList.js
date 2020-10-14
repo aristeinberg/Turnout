@@ -18,28 +18,22 @@ function Person(props) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={navigateToPersonDetails}>
+    <TouchableOpacity onPress={navigateToPersonDetails}>
       <View style={styles.person} >
         <View style={styles.personDetails}>
           <Text style={styles.name}>
             {props.contact.name}
           </Text>
           <Text style={styles.detail}>
-            {props.contact.getBirthdayStr()}
-          </Text>
-          <Text style={styles.detail}>
-            {props.contact.getCountyName()}
+            Next step: {nextStep.label }
           </Text>
         </View>
         <View style={styles.actions}>
-          <TouchableOpacity
-            onPress={navigateToNextStep}
-            style={styles.action}>
-            <Text>{ nextStep.label }</Text>
-          </TouchableOpacity>
+          <View style={{flex: 1}}>
+          <Text>&gt;</Text></View>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 }
 
