@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableWithoutFeedback, Button } from 'react-native';
+import { Text, TouchableOpacity, View, FlatList, TouchableWithoutFeedback, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext } from '../contacts';
+import { styles } from '../SharedStyles';
 
 function Person(props) {
   const navigation = useNavigation();
@@ -33,7 +34,7 @@ function Person(props) {
         <View style={styles.actions}>
           <TouchableOpacity
             onPress={navigateToNextStep}
-            style={styles.secondaryAction}>
+            style={styles.action}>
             <Text>{ nextStep.label }</Text>
           </TouchableOpacity>
         </View>
@@ -43,6 +44,8 @@ function Person(props) {
 }
 
 export default function PersonList() {
+  // Test the NUX flow with this line:
+  //const contacts = {}
   const { contacts, clearContacts } = useContext(ContactsContext);
   const navigation = useNavigation();
   function navigateToImportContacts() {
@@ -52,7 +55,7 @@ export default function PersonList() {
     headerRight: () => (
       <Button
         onPress={navigateToImportContacts}
-        title="Edit"
+        title={Object.keys(contacts).length == 0 ? "Add" : "Edit"}
         />
     )
   })
@@ -60,66 +63,44 @@ export default function PersonList() {
 
   return (
     <View style={styles.container}>
-      <FlatList style={styles.list}
-                data={Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name))}
-                renderItem={({item}) => <Person contact={item} />}
-                keyExtractor={(item) => item.id}
-      />
+      { Object.keys(contacts).length == 0 ? (
+        <>
+          <View style={[styles.intro, {flex: 2}]}>
+            <Text style={styles.introLead}>
+              To get started, add some contacts.
+            </Text>
+            <Text style={styles.introSecondary}>
+              You can import contacts from your phone address book or from
+              Facebook. <Text style={styles.link}>
+                Click "Add" in the top right corner.
+              </Text>
+            </Text>
+            <Text>
+              Once you've added them, we'll help you keep tabs on them to make
+              sure their vote counts.
+            </Text>
+            <Text>
+              For now, we're focusing on Pennsylvania. It's a highly impactful
+              state and with recent rulings on things like "naked ballots" we
+              want to make sure everyone's votes are counted successfully.
+            </Text>
+          </View>
+          <View style={{flex: 1}}/>
+        </>
+      ) : (
+          <FlatList style={styles.list}
+                    data={Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name))}
+                    renderItem={({item}) => <Person contact={item} />}
+                    keyExtractor={(item) => item.id}
+                    ListFooterComponent={() => (
+                      <Text style={styles.listFooter}>
+                        Want to have even more impact? Add more contacts!
+                        Click "Edit" in the top right.
+                      </Text>
+                    )}
+          />
+      )}
       <StatusBar style="auto" />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-  },
-  headerText: {
-    color: '#888',
-    fontSize: 24,
-    marginHorizontal: 15,
-  },
-  list: {
-  },
-  person: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    margin: 10,
-  },
-  personDetails: {
-    flexDirection: 'column',
-    paddingRight: 20,
-  },
-  name: {
-    fontSize: 18,
-  },
-  details: {
-    fontSize: 14,
-  },
-  actions: {
-    flexDirection: 'row',
-  },
-  action: {
-    backgroundColor: 'blue',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    marginRight: 5,
-  },
-  secondaryAction: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'gray',
-  },
-});

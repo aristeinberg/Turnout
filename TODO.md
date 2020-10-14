@@ -1,6 +1,6 @@
 - [ ] splash screen
 - [ ] colorize menu
-- [ ] NUX: point people to import contacts
+- [ ] bug: if you change counties on the PA site, it refreshes the webview
 - [ ] display the time the vote status was last updated
 - [ ] track when you last reached out, take notes on the result and/or update their vote status
 - [ ] analytics?? would be nice to track impact in some way!
