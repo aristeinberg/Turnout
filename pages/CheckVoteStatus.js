@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Picker, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Picker, ScrollView, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
@@ -11,11 +11,12 @@ export default function VotingStatus({route}) {
   const contact = contacts[route.params.contactId];
   const [voteStatus, setVoteStatus] = useState(contact.data.voteStatus);
   const navigation = useNavigation();
+  const [spinnerVisible, setSpinnerVisible] = useState(false);
+  const [instrumented, setInstrumented] = useState(false);
 
   const [firstName, lastName] = contact.name.split(" ");
 
   let webref = null;
-  let instrumented = false;
   function handleStateChange(data) {
     // for some reason just using injectedJavascript was causing the code to get
     // run multiple times. instead we inject when the page completes loading and
@@ -35,7 +36,7 @@ export default function VotingStatus({route}) {
       if (!instrumented) {
         webref.injectJavaScript(injectJs);
       }
-      instrumented = true;
+      setInstrumented(true);
   }
 
   function save() {
@@ -49,10 +50,26 @@ export default function VotingStatus({route}) {
       <View style={[styles.webview, {margin: 10, height: 300}]}>
         <WebView source={{ uri: "https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx"}}
                 ref={(r) => (webref = r)}
+                onLoadStart={() => (setSpinnerVisible(true))}
+                onLoad={() => setSpinnerVisible(false)}
                 sharedCookiesEnabled={true}
                 onMessage={(event) => {}}
                 onNavigationStateChange={handleStateChange}
                 /*injectedJavaScript={injectJs}*/ />
+        {spinnerVisible && (
+          <ActivityIndicator
+            style={{
+            flex: 1,
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center' }}
+            size="large"
+          />
+        )}
       </View>
       <Text>Select the status you see above from this list:</Text>
       <Picker selectedValue={voteStatus} onValueChange={setVoteStatus}>{
