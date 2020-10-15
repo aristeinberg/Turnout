@@ -112,10 +112,10 @@ export default class Contact {
         birthYear: null,
         phone: null,
         email: null,
-        address: null,
         city: null,
         county: null,
         voteStatus: null,
+        socialUrl: null,
         modified: new Date(),
       },
       data
@@ -242,40 +242,67 @@ export default class Contact {
   static fromAddressBook(c) {
     // TODO: should probably add some error checks in here as "c" is pretty
     // untrusted
-    let data = {};
-    if (c.birthday) {
+    let contact = new Contact(c.id, c.name, ContactSources.ADDRESS_BOOK, {});
+    contact.addDataFromAddressBook(c);
+    return contact;
+  }
+
+  addDataFromAddressBook(c) {
+    if (!c) return;
+    if (c.birthday && !this.data.birthYear) {
       // format=gregorian calendar?
-      data.birthYear = c.birthday.year;
-      data.birthMonth = c.birthday.month;
-      data.birthDay = c.birthday.day;
+      this.data.birthYear = c.birthday.year;
+      this.data.birthMonth = c.birthday.month;
+      this.data.birthDay = c.birthday.day;
     }
-    if (c.phoneNumbers) {
+    if (c.phoneNumbers && !this.data.phone) {
       // unclear if we need to store this since we can look up the contact
       // when we want to use this, and it's better to not need to deal
       // with multiple numbers. the field is useful though for non-address
       // book imported contacts.
-      data.phone = c.phoneNumbers[0].digits;
+      this.data.phone = c.phoneNumbers[0].digits;
     }
-    if (c.emails) {
+    if (c.emails && !this.data.email) {
       // same comment as phone number
-      data.email = c.emails[0].email;
+      this.data.email = c.emails[0].email;
     }
-    return new Contact(c.id, c.name, ContactSources.ADDRESS_BOOK, data);
+    if (c.socialProfiles && !this.data.socialUrl) {
+      for (const sp of c.socialProfiles) {
+        if (sp.service == 'Facebook') {
+          this.data.socialUrl = sp.url.replace('http:', 'https:').replace('/www.', '/m.');
+        }
+      }
+    }
+    if (c.addresses) {
+      let filtered = c.addresses.filter((a) => {
+        let region = a.region.toLowerCase();
+        return (region == 'pennsylvania' || region == 'pa');
+      });
+      if (!this.data.city && filtered.length > 0) {
+        this.data.city = filtered[0].city;
+      }
+    }
   }
 
   async lookupInAddressBook() {
-    if (this.source != ContactSources.ADDRESS_BOOK) {
-      return;
-    }
-
     const { status } = await Contacts.requestPermissionsAsync();
-    if (status === 'granted') {
-      const data = await Contacts.getContactByIdAsync(this.id, [
+    let fields = [
         Contacts.Fields.PhoneNumbers,
         Contacts.Fields.Birthday,
         Contacts.Fields.SocialProfiles,
         Contacts.Fields.Emails,
-      ]);
+        Contacts.Fields.Addresses,
+    ];
+    if (status === 'granted') {
+      let data = null;
+      if (this.source == ContactSources.ADDRESS_BOOK) {
+        data = await Contacts.getContactByIdAsync(this.id, fields);
+      } else {
+        const allContacts = await Contacts.getContactsAsync({ name: this.name, fields: fields });
+        console.log(allContacts)
+        const results = allContacts.data.filter((c) => c.name && c.name.toLowerCase() == this.name.toLowerCase());
+        if (results.length > 0) data = results[0];
+      }
       return data;
     }
   }

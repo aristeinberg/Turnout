@@ -8,16 +8,13 @@
   - [ ] help you figure out what county they live in:
      - [ ] lookup from a city 
      - [ ] show their FB profile to find their city
-     - [ ] check the phone address book for a city/address
   - [ ] help figuring out birthdays:
      - [ ] automatically navigate the facebook profile to the basic info section
      - [ ] try to scan your phone calendar for birthdates
   - [ ] help contacting people
-     - [ ] match up facebook contacts with address book entries to find phone number
      - [ ] link/webview to contact on FB messenger
-  - [ ] separate out the concept of vote status reported by web site from vote status reported by reaching out
-     - [ ] display the time the vote status was last updated
-     - [ ] track when you last reached out, take notes on the result and/or update their vote status
+  - [ ] display the time the vote status was last updated
+  - [ ] track when you last reached out, take notes on the result and/or update their vote status
 
 - bugs:
   - [ ] fix styling on webviews to fit more naturally into the page

@@ -8,30 +8,12 @@ import { ContactsContext, ContactSources } from '../contacts';
 import { styles } from '../SharedStyles'
 
 function EmbedSocialMedia(props) {
-  let defSMUrl = null;
-  if (props.contact.source == ContactSources.FACEBOOK) {
-    // for FB imported contacts, we use their profile URL as the id!
-    if (props.contact.id.includes('?')) {
-      defSMUrl = props.contact.id;
-    } else {
-      defSMUrl = props.contact.id + '/about';
-    }
+  let defSMUrl = props.contact.data.socialUrl;
+  if (defSMUrl && !defSMUrl.includes('?')) {
+    defSMUrl += '/about';
   }
 
   const [socialMediaUrl, setSocialMediaUrl] = useState(defSMUrl);
-
-  props.contact.lookupInAddressBook().then((abContact) => {
-    console.log(abContact);
-    if (!abContact || !abContact['socialProfiles']) {
-      return;
-    }
-    for (const sp of abContact['socialProfiles']) {
-      if (sp['service'] == 'Facebook') {
-        setSocialMediaUrl(sp['url'].replace('http:', 'https:').replace('/www.', '/m.') + '/about');
-        return;
-      }
-    }
-  });
 
   const url = socialMediaUrl ||
     'https://www.facebook.com/search/top?q=' + encodeURIComponent(props.contact.name);

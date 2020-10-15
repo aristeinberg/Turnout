@@ -46,6 +46,7 @@ export default function ImportContacts({route}) {
           Contacts.Fields.Birthday,
           Contacts.Fields.SocialProfiles,
           Contacts.Fields.Emails,
+          Contacts.Fields.Addresses,
         ],
       });
 
@@ -55,10 +56,12 @@ export default function ImportContacts({route}) {
 
       const selectedContacts = Object.fromEntries(
         newEntries.filter(c => (
-          c.phoneNumbers &&
+          (c.phoneNumbers &&
           c.phoneNumbers.filter(p => p.digits &&
-                                     p.digits.match(PA_NUM_REGEX)).length > 0)
-        ).map(c => [c.id, true])
+                                      p.digits.match(PA_NUM_REGEX)).length > 0) ||
+          (c.addresses &&
+           c.addresses.filter(a => a.region.toLowerCase() == 'pennsylvania' || a.region.toLowerCase() == 'pa').length > 0)
+        )).map(c => [c.id, true])
       );
       setAddressBook(newAddresses);
       setSelectedContacts(selectedContacts);
@@ -86,10 +89,12 @@ export default function ImportContacts({route}) {
   async function saveSingleContact() {
     // TODO: wanted to use uuid but apparently it doesn't work in expo?
     // hopefully this will be good enough...
-    id = String(Random.getRandomBytes(8));
-    console.log('save', id);
+    let id = String(Random.getRandomBytes(8));
+    let contact = new Contact(id, contactName, ContactSources.MANUAL);
+    contact.addDataFromAddressBook(await contact.lookupInAddressBook());
+    console.log('adding contact', id, contact)
     addToContacts({
-      [id]: new Contact(id, contactName, ContactSources.MANUAL),
+      [id]: contact,
     })
     setContactName('');
     await sleep(250); // hack - make sure the person can save before navigating to their details
@@ -107,11 +112,12 @@ export default function ImportContacts({route}) {
     const [command, url2, name] = (data || '').split('||');
     console.log('callback', command, url, url2, name);
     if (command == 'PROF') {
+      let contact = new Contact(url2, name, ContactSources.FACEBOOK, {socialUrl: url2});
+      alert('Adding contact: ' + name);
+      contact.addDataFromAddressBook(await contact.lookupInAddressBook());
       addToContacts({
-        [url]: new Contact(url2, name, ContactSources.FACEBOOK),
+        [url]: contact,
       });
-      console.log('Added contact: ', url, url2, name);
-      alert('Added contact: ' + name);
       return;
     }
     if (url.includes('/search/top/')) {

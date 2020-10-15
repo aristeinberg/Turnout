@@ -34,7 +34,6 @@ export default function ReachOut({route}) {
       keyMessage += "Are you planning to vote in this election? You should do it ASAP!";
       break;
   }
-  console.log('reachout:', contact.data.voteStatus, keyMessage);
 
   function text() {
     Communications.text(contact.data.phone, keyMessage)
