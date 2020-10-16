@@ -84,7 +84,7 @@ export const COUNTY_CODES =
   Object.fromEntries(Object.entries(COUNTIES).map(([k,v]) => [v, k]));
 
 export const VOTE_STATUSES = {
-  UNKNOWN: 'Unknown',
+  [null]: 'Unknown',
   NO_VBM: 'Mail ballot not requested',
   VBM_REQUESTED: 'Ballot requested, not yet mailed',
   VBM_SENT_BY_OFFICE: 'Ballot mailed to voter',
@@ -236,7 +236,7 @@ export default class Contact {
       }
       return COUNTIES[this.data.county] || "";
     }
-    return "";
+    return "Unknown";
   }
 
   static fromAddressBook(c) {
