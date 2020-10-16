@@ -2,7 +2,7 @@
   "expo": {
     "name": "Drive Turnout",
     "slug": "Turnout",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/turnout.png",
     "splash": {
@@ -18,7 +18,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.driveturnout.Turnout"
+      "bundleIdentifier": "com.driveturnout.Turnout",
+      "buildNumber": "2",
+      "infoPlist": {
+        "NSContactsUsageDescription": "This app uses your address book to help you find people to encourage to vote."
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
