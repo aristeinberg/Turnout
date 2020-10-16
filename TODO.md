@@ -1,6 +1,6 @@
 - next steps:
   - [ ] analytics?? would be nice to track impact in some way!
-  - [ ] switch UI to reduce the number of "buttons" and instead more closely resemble the phone contact UI with list items and highlighting on touch
+  - [ ] a bit more style cleanup in import contacts and edit contact details
   - [ ] track facebook login status and present a different url/UI for logging in the first time
 
 - polish:

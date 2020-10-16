@@ -46,7 +46,7 @@ export default function ReachOut({route}) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container, {padding: 10, backgroundColor: '#fff'}}>
       <Text style={{ fontSize: 16 }}>
         You should tell 
         <Text style={{ fontWeight: 'bold' }}> { contact.name } </Text>

@@ -167,7 +167,7 @@ export default function ImportContacts({route}) {
     <ScrollView style={styles.container} keyboardShouldPersistTaps='handled'>
       <ListButton onPress={showExpandContactList} text='Load contacts from phone' />
       { expandContactList &&
-        <View>
+        <View style={{padding: 10}}>
           <View style={{flexDirection: 'row', height: 400 }}>
             <View style={{flexDirection: 'column', flex: 1, marginRight: 5}}>
               <Text style={{fontWeight: 'bold'}}>Selected:</Text>
@@ -188,7 +188,7 @@ export default function ImportContacts({route}) {
       }
       <ListButton onPress={() => setExpandSingleContact(true)} text='Add a single contact' />
       { expandSingleContact &&
-        <View>
+        <View style={{padding: 10}}>
           <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
                 autoFocus={true} autoCorrect={false}
                 onSubmitEditing={saveSingleContact}
@@ -200,7 +200,7 @@ export default function ImportContacts({route}) {
       <ListButton onPress={() => setExpandFacebook(!expandFacebook)} style={styles.buttonRow}
                   text='Add from Facebook' />
       { expandFacebook &&
-        <View>
+        <View style={{padding: 10}}>
           <View style={styles.webview}>
             <WebView style={{flex: 0, height: 400}}
                      automaticallyAdjustContentInsets={false}

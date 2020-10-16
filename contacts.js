@@ -179,7 +179,7 @@ export default class Contact {
 
   getBirthdayStr() {
     if (!this.data.birthDay) {
-      return '';
+      return 'Unknown';
     }
     const MONTHS = {
       0: 'January',
