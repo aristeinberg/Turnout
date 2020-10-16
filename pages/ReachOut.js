@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Communications from 'react-native-communications';
 
-import { ContactsContext, VOTE_STATUSES } from '../contacts';
-import { styles } from '../SharedStyles'
+import { ContactsContext } from '../contacts';
+import { styles } from '../components/SharedStyles'
 
 export default function ReachOut({route}) {
   const { contacts } = useContext(ContactsContext);

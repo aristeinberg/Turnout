@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Picker } from 'react-native';
+import { Text, TouchableOpacity, View, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, COUNTIES } from '../contacts';
-import { styles } from '../SharedStyles'
+import { styles } from '../components/SharedStyles'
 
 export default function EditCounty({route}) {
   const navigation = useNavigation();

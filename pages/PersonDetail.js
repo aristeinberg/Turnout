@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { styles } from '../SharedStyles';
+import { styles } from '../components/SharedStyles';
+import { ListButton } from '../components/Common';
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
 
 export default function PersonDetails({route}) {
@@ -37,48 +38,18 @@ export default function PersonDetails({route}) {
   })
 
   return (
-    <View style={styles.personDetail}>
-      <View style={styles.personDetailRow}>
-        <View style={{flex: 1}}>
-          <Text>
-            Birthday: { contact.getBirthdayStr() }
-          </Text>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={navigateToEditBirthday}>
-          <Text>
-            {contact.data.birthDay ? "Edit" : "Find"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.personDetailRow}>
-        <Text>
-          County: { contact.getCountyName() }
-        </Text>
-        <TouchableOpacity style={styles.button} onPress={navigateToEditCounty}>
-          <Text>{ contact.data.county ? "Edit" : "Find" }</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.personDetailRow}>
-        <View style={{flex: 1}}>
-          <Text>
-            Voting status: { VOTE_STATUSES[contact.data.voteStatus] }
-          </Text>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={navigateToCheckVoteStatus}>
-          <Text>{ false ? "Update" : "Check" }</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.personDetailRow}>
-        <Text>
-          Last reached out: { "Unknown" }
-        </Text>
-        <TouchableOpacity style={styles.button} onPress={navigateToReachOut}>
-          <Text>Reach out</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={[styles.button, styles.warning]} onPress={deleteContact}>
-        <Text style={styles.warning}>Delete contact</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <ListButton onPress={navigateToEditBirthday}
+                  text={'Birthday: ' + contact.getBirthdayStr()} />
+      <ListButton onPress={navigateToEditCounty} 
+                  text={'County: ' + contact.getCountyName()} />
+      <ListButton onPress={navigateToCheckVoteStatus} 
+                  text={'Voting status: ' + VOTE_STATUSES[contact.data.voteStatus]} />
+      <ListButton onPress={navigateToReachOut} 
+                  text={'Last time reaching out: Unknown'} />
+      <ListButton onPress={deleteContact} 
+                  warn={'Are you sure you want to delete this contact?'}
+                  text={'Delete contact'} />
     </View>
   );
 }

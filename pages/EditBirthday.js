@@ -5,7 +5,7 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, ContactSources } from '../contacts';
-import { styles } from '../SharedStyles'
+import { styles } from '../components/SharedStyles'
 
 function EmbedSocialMedia(props) {
   let defSMUrl = props.contact.data.socialUrl;

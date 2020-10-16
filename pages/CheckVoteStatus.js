@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
-import { styles } from '../SharedStyles'
+import { styles } from '../components/SharedStyles'
 
 export default function VotingStatus({route}) {
   const { contacts, updateContact } = useContext(ContactsContext);

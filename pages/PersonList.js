@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext } from 'react';
-import { Text, TouchableOpacity, View, FlatList, TouchableWithoutFeedback, Button } from 'react-native';
+import { Text, View, FlatList, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext } from '../contacts';
-import { styles } from '../SharedStyles';
+import { styles } from '../components/SharedStyles';
+import { ListButton } from '../components/Common';
 
 function Person(props) {
   const navigation = useNavigation();
@@ -18,22 +19,16 @@ function Person(props) {
   }
 
   return (
-    <TouchableOpacity onPress={navigateToPersonDetails}>
-      <View style={styles.person} >
-        <View style={styles.personDetails}>
-          <Text style={styles.name}>
-            {props.contact.name}
-          </Text>
-          <Text style={styles.detail}>
-            Next step: {nextStep.label }
-          </Text>
-        </View>
-        <View style={styles.actions}>
-          <View style={{flex: 1}}>
-          <Text>&gt;</Text></View>
-        </View>
+    <ListButton onPress={navigateToPersonDetails}>
+      <View style={styles.personDetails}>
+        <Text style={styles.name}>
+          {props.contact.name}
+        </Text>
+        <Text style={styles.detail}>
+          Next step: {nextStep.label }
+        </Text>
       </View>
-    </TouchableOpacity>
+    </ListButton>
   );
 }
 

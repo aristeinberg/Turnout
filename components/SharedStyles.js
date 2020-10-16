@@ -2,27 +2,12 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  personDetail: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 10,
-  },
-  personDetailRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    padding: 10,
-  },
   button: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderColor: '#888',
     borderWidth: 1,
     borderRadius: 5,
-  },
-  warning: {
-    borderColor: 'red',
-    color: 'red',
   },
   webview: {
     borderWidth: 2,
@@ -32,12 +17,11 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor: '#fff',
+    paddingVertical: 10,
+    backgroundColor: '#f7f7f7',
   },
   large: {
     fontSize: 20,
-    margin: 5,
   },
   intro: {
     alignItems: 'stretch',
@@ -57,33 +41,12 @@ export const styles = StyleSheet.create({
     color: '#55dff1',
     //color: '#007aff',
   },
-  person: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#888',
-  },
   personDetails: {
     flexDirection: 'column',
-    paddingRight: 20,
   },
   name: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  details: {
-    fontSize: 14,
-  },
-  actions: {
-  },
-  action: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'gray',
   },
   listFooter: {
     padding: 10,

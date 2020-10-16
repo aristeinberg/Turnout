@@ -6,7 +6,8 @@ import * as Contacts from 'expo-contacts';
 import * as Random from 'expo-random';
 
 import Contact, { ContactsContext, ContactSources } from '../contacts';
-import { styles } from '../SharedStyles';
+import { styles } from '../components/SharedStyles';
+import { ListButton } from '../components/Common';
 
 const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
@@ -164,9 +165,7 @@ export default function ImportContacts({route}) {
 
   return (
     <ScrollView style={styles.container} keyboardShouldPersistTaps='handled'>
-      <TouchableOpacity onPress={showExpandContactList} style={[styles.button, styles.large]}>
-        <Text style={styles.large}>Load contacts from phone</Text>
-      </TouchableOpacity>
+      <ListButton onPress={showExpandContactList} text='Load contacts from phone' />
       { expandContactList &&
         <View>
           <View style={{flexDirection: 'row', height: 400 }}>
@@ -187,9 +186,7 @@ export default function ImportContacts({route}) {
           <SaveCancelButtons onSave={saveAddressImport} onCancel={cancelAddressImport} />
         </View>
       }
-      <TouchableOpacity onPress={() => setExpandSingleContact(true)} style={[styles.button, styles.large]}>
-        <Text style={styles.large}>Add a single contact</Text>
-      </TouchableOpacity>
+      <ListButton onPress={() => setExpandSingleContact(true)} text='Add a single contact' />
       { expandSingleContact &&
         <View>
           <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
@@ -200,9 +197,8 @@ export default function ImportContacts({route}) {
           <SaveCancelButtons onSave={saveSingleContact} onCancel={() => setExpandSingleContact(false)} />
         </View>
       }
-      <TouchableOpacity onPress={() => setExpandFacebook(!expandFacebook)} style={[styles.button, styles.large]}>
-        <Text style={styles.large}>Add from Facebook</Text>
-      </TouchableOpacity>
+      <ListButton onPress={() => setExpandFacebook(!expandFacebook)} style={styles.buttonRow}
+                  text='Add from Facebook' />
       { expandFacebook &&
         <View>
           <View style={styles.webview}>
@@ -242,9 +238,9 @@ export default function ImportContacts({route}) {
           <Text>Navigate to a Facebook profile to have it get added to your list.</Text>
         </View>
       }
-      <TouchableOpacity onPress={clearContactsAndGoBack} style={[styles.button, styles.large, styles.warning]}>
-        <Text style={[styles.large, styles.warning]}>Clear your saved contacts</Text>
-      </TouchableOpacity>
+      <ListButton warn='Are you sure you want to remove your whole contact list?'
+                  onPress={clearContactsAndGoBack}
+                  text='Clear your saved contacts' />
     </ScrollView>
   );
 }
