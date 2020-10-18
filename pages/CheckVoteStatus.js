@@ -4,7 +4,8 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
-import { styles } from '../components/SharedStyles'
+import { styles } from '../components/SharedStyles';
+import { SaveButtonRow } from '../components/Common';
 
 export default function VotingStatus({route}) {
   const { contacts, updateContact } = useContext(ContactsContext);
@@ -77,9 +78,7 @@ export default function VotingStatus({route}) {
           <Picker.Item label={description} value={key} />
         ))
       }</Picker>
-      <TouchableOpacity style={[styles.button, styles.large]} onPress={save}>
-        <Text style={styles.large}>Save</Text>
-      </TouchableOpacity>
+      <SaveButtonRow onPress={save} />
     </ScrollView>
   );
 }

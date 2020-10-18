@@ -5,7 +5,8 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, ContactSources } from '../contacts';
-import { styles } from '../components/SharedStyles'
+import { styles } from '../components/SharedStyles';
+import { SaveButtonRow } from '../components/Common';
 
 function EmbedSocialMedia(props) {
   let defSMUrl = props.contact.data.socialUrl;
@@ -19,7 +20,7 @@ function EmbedSocialMedia(props) {
     'https://www.facebook.com/search/top?q=' + encodeURIComponent(props.contact.name);
   console.log('url is ', url)
   return (
-    <View style={{ flexDirection: 'column', flex: 1, padding: 5 }}>
+    <View style={{ flexDirection: 'column', flex: 1, padding: 10, backgroundColor: 'white' }}>
       <Text>Not sure of their birthday? See if it's listed on Facebook. It'd be in their "About" section under "Basic Info"...</Text>
       <View style={styles.webview}>
         <WebView source={{ uri: url }} sharedCookiesEnabled={true} />
@@ -47,16 +48,16 @@ export default function EditBirthday({route}) {
   }
 
   return (
-    <View style={{flex: 1, flexDirection: 'column', padding: 10}}>
-      <DateTimePicker
-        mode="date"
-        onChange={(event, date) => setSelectedDate(date)}
-        value={selectedDate}
-      />
-      <TouchableOpacity style={styles.button} onPress={save}>
-        <Text>Save</Text>
-      </TouchableOpacity>
+    <>
+      <View style={{backgroundColor: 'white', padding: 10, marginBottom: 20}}>
+        <DateTimePicker
+          mode="date"
+          onChange={(event, date) => setSelectedDate(date)}
+          value={selectedDate}
+        />
+        <SaveButtonRow onPress={save} />
+      </View>
       <EmbedSocialMedia contact={contact} />
-    </View>
+    </>
   );
 }

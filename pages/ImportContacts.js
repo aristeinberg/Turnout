@@ -34,7 +34,9 @@ export default function ImportContacts({route}) {
 
   function importAddressBook() {
     console.log('importing contacts')
-    navigation.navigate("Import from Address Book");
+    // use replace instead of navigate so when you finish importing it goes
+    // straight home
+    navigation.replace("Import from Address Book");
   }
   function clearContactsAndGoBack() {
     clearContacts();

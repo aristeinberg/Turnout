@@ -11,31 +11,37 @@ const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 72
 const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
 
 function ContactList(props) {
+  const [data, setData] = useState(props.data.sort((a,b) => a.name.localeCompare(b.name)));
+
+  function select(item) {
+    props.addToContacts({[item.id]: item});
+    setData(data.filter((i) => i.id != item.id));
+  }
+
   // TODO: search box if list is > n
   // TODO: why doesn't this update when you click someone?
   // TODO: improved styling
   return (
     <FlatList 
-      style={{borderWidth: 1, borderColor: 'black'}}
-      data={props.data.sort((a,b) => a.name.localeCompare(b.name))}
-      renderItem={({item}) => {
-        return (
-        <TouchableOpacity 
-          onPress={(e) => props.addToContacts({[item.id]: item})}>
-          <View style={{ flexDirection: 'row', padding: 5, width: 500 }}>
+      data={data}
+      renderItem={({item}) => (
+        <ListButton 
+          onPress={(e) => select(item)}
+          buttonText="+">
+          <View style={{ flexDirection: 'row', width: 500 }}>
             <Text style={{ fontWeight: 'bold' }}>{item.name.split(' ', 2)[0]}</Text>
             <Text> {item.name.split(' ', 2)[1]}</Text>
           </View>
-        </TouchableOpacity>
-      )}}
+        </ListButton>
+      )}
       keyExtractor={(item) => item.id }
     />);
 }
 
 export default function ImportAddressBook(props) {
   const { contacts, addToContacts } = useContext(ContactsContext);
-  const [ pennAddresses, setPennAddresses ] = useState([]);
-  const [ notPennAddresses, setNotPennAddresses ] = useState([]);
+  const [ pennAddresses, setPennAddresses ] = useState(null);
+  const [ notPennAddresses, setNotPennAddresses ] = useState(null);
   const navigation = useNavigation(); // TODO: streamline navigation when complete
 
   useEffect(() => { importContacts(); }, []);
@@ -74,18 +80,22 @@ export default function ImportAddressBook(props) {
   }
 
   return (
-    <View style={{height: 500}}>{/* for some reason using flex rather than a
-                                 fixed height squashes the lists to 0 height */}
-      <View style={{padding: 10}}>
-        <Text style={{fontWeight: 'bold'}}>People with PA-based contact info:</Text>
-        <ContactList data={pennAddresses} addToContacts={addToContacts} />
-      </View>
-      <View style={{padding: 10}}>
-        <Text style={{fontWeight: 'bold'}}>Everyone else:</Text>
-        {/* todo: remove selected? */}
-        {/* todo: figure out how not to reset scroll position when you select one... */}
-        <ContactList data={notPennAddresses} addToContacts={addToContacts} />
-      </View>
+    <View style={{flex: 1}}>
+      { pennAddresses &&
+        <View style={{flex: 
+            Math.max(pennAddresses.length, notPennAddresses ? notPennAddresses.length/2 : 1)}}>
+          <Text style={{fontWeight: 'bold', padding: 10}}>People with PA-based contact info:</Text>
+          <ContactList data={pennAddresses} addToContacts={addToContacts} />
+        </View>
+      }
+      { notPennAddresses && 
+        <View style={{flex: notPennAddresses.length}}>
+          { pennAddresses &&
+            <Text style={{fontWeight: 'bold', padding: 10}}>Everyone else:</Text>
+          }
+          <ContactList data={notPennAddresses} addToContacts={addToContacts} />
+        </View>
+      }
     </View>
   );
 }

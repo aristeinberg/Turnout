@@ -3,7 +3,8 @@ import { Text, TouchableOpacity, View, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, COUNTIES } from '../contacts';
-import { styles } from '../components/SharedStyles'
+import { styles } from '../components/SharedStyles';
+import { SaveButtonRow } from '../components/Common';
 
 export default function EditCounty({route}) {
   const navigation = useNavigation();
@@ -25,9 +26,7 @@ export default function EditCounty({route}) {
           ))
         }
       </Picker>
-      <TouchableOpacity style={styles.button} onPress={save}>
-        <Text>Save</Text>
-      </TouchableOpacity>
+      <SaveButtonRow onPress={save} />
     </View>
   );
 }

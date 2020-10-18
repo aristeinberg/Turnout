@@ -13,7 +13,6 @@ export function ListButton(props) {
       return props.onPress(event);
     }
   }
-  // TODO: style warnings with red
   return (
     <TouchableOpacity style={styles.listButton} onPress={onPress}>
       <View style={styles.listButtonRow}>
@@ -24,10 +23,26 @@ export function ListButton(props) {
         }
         </View>
         <View style={styles.listButtonArrow}>
-          <Text style={styles.listButtonArrowText}>&gt;</Text>
+          { props.buttonContents ||
+            <Text style={styles.listButtonArrowText}>
+              { props.buttonText || '>'}
+            </Text>
+          }
         </View>
       </View>
     </TouchableOpacity>
+  );
+}
+
+export function SaveButtonRow(props) {
+  return (
+    <View style={{ flexDirection: 'row'}}>
+      <View style={{flex: 1}} />
+      <TouchableOpacity style={styles.saveButton} onPress={props.onPress}>
+        <Text>Save</Text>
+      </TouchableOpacity>
+      <View style={{flex: 1}} />
+    </View>
   );
 }
 
@@ -54,5 +69,13 @@ const styles = StyleSheet.create({
   listButtonContent: {
     flex: 1,
     paddingRight: 10,
+  },
+
+  saveButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderColor: '#888',
+    borderWidth: 1,
+    borderRadius: 5,
   },
 });
