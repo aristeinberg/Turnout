@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ContactsContext } from '../contacts';
 import { styles } from '../components/SharedStyles';
 import { ListButton } from '../components/Common';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function Person(props) {
   const navigation = useNavigation();
@@ -35,18 +36,18 @@ function Person(props) {
 export default function PersonList() {
   // Test the NUX flow with this line:
   //const contacts = {}
-  const { contacts, clearContacts } = useContext(ContactsContext);
+  const { contacts } = useContext(ContactsContext);
   const navigation = useNavigation();
   function navigateToImportContacts() {
     return navigation.navigate("Import Contacts");
   }
   navigation.setOptions({
     headerRight: () => (
-      <Button
-        onPress={navigateToImportContacts}
-        color='#fff'
-        title={Object.keys(contacts).length == 0 ? "Add" : "Edit"}
-        />
+      <TouchableOpacity onPress={navigateToImportContacts}>
+        <Text style={{color:'#fff', padding: 10 }}>
+          {Object.keys(contacts).length == 0 ? "Add" : "Edit"}
+        </Text>
+      </TouchableOpacity>
     )
   })
 
