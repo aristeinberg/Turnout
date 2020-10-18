@@ -5,6 +5,7 @@ import { AsyncStorage } from 'react-native';
 
 import Contact, { ContactsContext } from './contacts';
 import ImportContacts from './pages/ImportContacts';
+import ImportAddressBook from './pages/ImportAddressBook';
 import PersonDetails from './pages/PersonDetail';
 import EditBirthday from './pages/EditBirthday';
 import EditCounty from './pages/EditCounty';
@@ -87,6 +88,7 @@ export default function App() {
           }} >
           <Stack.Screen name="Your Contacts" component={PersonList} />
           <Stack.Screen name="Import Contacts" component={ImportContacts} />
+          <Stack.Screen name="Import from Address Book" component={ImportAddressBook} />
           <Stack.Screen name="Person Details" component={PersonDetails} />
           <Stack.Screen name="Edit Birthday" component={EditBirthday} />
           <Stack.Screen name="Edit County" component={EditCounty} />

@@ -1,16 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
-import * as Contacts from 'expo-contacts';
 import * as Random from 'expo-random';
 
 import Contact, { ContactsContext, ContactSources } from '../contacts';
 import { styles } from '../components/SharedStyles';
 import { ListButton } from '../components/Common';
-
-const PA_AREA_CODES = [215, 223, 267, 272, 412, 445, 484, 570, 582, 610, 717, 724, 814, 878]
-const PA_NUM_REGEX = '^\\+?1?(' + PA_AREA_CODES.join('|') + ')';
 
 function SaveCancelButtons(props) {
   return (
@@ -30,58 +26,15 @@ function sleep(ms) {
 }
 
 export default function ImportContacts({route}) {
-  const { contacts, addToContacts, clearContacts } = useContext(ContactsContext);
-  const [ expandContactList, setExpandContactList ] = useState(false);
+  const { addToContacts, clearContacts } = useContext(ContactsContext);
   const [ expandSingleContact, setExpandSingleContact ] = useState(false);
+  const [ expandFacebook, setExpandFacebook ] = useState(false);
   const [ contactName, setContactName ] = useState('');
-  const [ addressBook, setAddressBook ] = useState({});
-  const [ selectedContacts, setSelectedContacts ] = useState({});
   const navigation = useNavigation();
 
-  async function importContacts() {
-    const { status } = await Contacts.requestPermissionsAsync();
-    if (status === 'granted') {
-      const { data } = await Contacts.getContactsAsync({
-        fields: [
-          Contacts.Fields.PhoneNumbers,
-          Contacts.Fields.Birthday,
-          Contacts.Fields.SocialProfiles,
-          Contacts.Fields.Emails,
-          Contacts.Fields.Addresses,
-        ],
-      });
-
-      const newEntries = data.filter(c => !(c.id in contacts) && c.name);
-      const newAddresses = Object.fromEntries(
-         newEntries.map(c => [c.id, Contact.fromAddressBook(c)]));
-
-      const selectedContacts = Object.fromEntries(
-        newEntries.filter(c => (
-          (c.phoneNumbers &&
-          c.phoneNumbers.filter(p => p.digits &&
-                                      p.digits.match(PA_NUM_REGEX)).length > 0) ||
-          (c.addresses &&
-           c.addresses.filter(a => a.region.toLowerCase() == 'pennsylvania' || a.region.toLowerCase() == 'pa').length > 0)
-        )).map(c => [c.id, true])
-      );
-      setAddressBook(newAddresses);
-      setSelectedContacts(selectedContacts);
-    }
-  }
-
-  function showExpandContactList() {
+  function importAddressBook() {
     console.log('importing contacts')
-    importContacts();
-    setExpandContactList(true);
-  }
-  function saveAddressImport() {
-    console.log('saving contacts')
-    addToContacts(Object.fromEntries(
-      Object.keys(selectedContacts).map(id => [id, addressBook[id]])));
-    navigation.navigate("Your Contacts");
-  }
-  function cancelAddressImport() {
-    setExpandContactList(false);
+    navigation.navigate("Import from Address Book");
   }
   function clearContactsAndGoBack() {
     clearContacts();
@@ -102,7 +55,6 @@ export default function ImportContacts({route}) {
     navigation.navigate("Person Details", {contactId: id});
   }
 
-  const [ expandFacebook, setExpandFacebook ] = useState(false);
   let fbRef = null; // this will point to the fb webview
   const facebookUrl = 'https://m.facebook.com/search/top/?q=friends%20who%20live%20in%20pennsylvania&ref=content_filter&source=typeahead'
   async function handleFbNavStateChange(newNavState) {
@@ -136,56 +88,9 @@ export default function ImportContacts({route}) {
   })();`);
   }
 
-  function ContactList(props) {
-    return (
-      <FlatList 
-        style={{borderWidth: 1, borderColor: 'black'}}
-        data={props.data.sort((a,b) => a.name.localeCompare(b.name))}
-        renderItem={({item}) => {
-          return (
-          <TouchableOpacity 
-            onPress={(e) => {
-              let newContacts = {...selectedContacts};
-              if (props.selected) {
-                delete newContacts[item.id];
-              } else {
-                newContacts[item.id] = true;
-              }
-              setSelectedContacts(newContacts);
-            }}>
-            <View style={{ flexDirection: 'row', padding: 5, width: 500 }}>
-              <Text style={{ fontWeight: 'bold' }}>{item.name.split(' ', 2)[0]}</Text>
-              <Text> {item.name.split(' ', 2)[1]}</Text>
-            </View>
-          </TouchableOpacity>
-        )}}
-        keyExtractor={(item) => item.id }
-      />);
-  }
-
   return (
-    <ScrollView style={styles.container} keyboardShouldPersistTaps='handled'>
-      <ListButton onPress={showExpandContactList} text='Load contacts from phone' />
-      { expandContactList &&
-        <View style={{padding: 10}}>
-          <View style={{flexDirection: 'row', height: 400 }}>
-            <View style={{flexDirection: 'column', flex: 1, marginRight: 5}}>
-              <Text style={{fontWeight: 'bold'}}>Selected:</Text>
-              <ContactList selected={true}
-                data={Object.keys(selectedContacts).map(id => addressBook[id])} />
-            </View>
-            <View style={{flexDirection: 'column', flex: 1}}>
-              <Text style={{fontWeight: 'bold'}}>Unselected:</Text>
-              {/* todo: remove selected? */}
-              {/* todo: figure out how not to reset scroll position when you select one... */}
-              <ContactList selected={false}
-                data={Object.values(addressBook)} />
-            </View>
-          </View>
-          <Text>(By default, we selected people with PA area codes.)</Text>
-          <SaveCancelButtons onSave={saveAddressImport} onCancel={cancelAddressImport} />
-        </View>
-      }
+    <View style={styles.container} keyboardShouldPersistTaps='handled'>
+      <ListButton onPress={importAddressBook} text='Load contacts from phone' />
       <ListButton onPress={() => setExpandSingleContact(true)} text='Add a single contact' />
       { expandSingleContact &&
         <View style={{padding: 10}}>
@@ -241,6 +146,6 @@ export default function ImportContacts({route}) {
       <ListButton warn='Are you sure you want to remove your whole contact list?'
                   onPress={clearContactsAndGoBack}
                   text='Clear your saved contacts' />
-    </ScrollView>
+    </View>
   );
 }
