@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Alert, TextInput, FlatList } from 'react-native';
 
+const LIST_BUTTON_HEIGHT = 38;
+
 export function ListButton(props) {
   function onPress(event) {
     if (props.warn) {
@@ -52,7 +54,7 @@ export function Typeahead(props) {
   const [searchText, setSearchText] = useState(props.defaultText);
   function match(item) {
     if (!searchText) return true;
-    return (item.key.indexOf(searchText) >= 0);
+    return (item.toLowerCase().indexOf(searchText.toLowerCase()) >= 0);
   }
 
   const index = Object.fromEntries(props.data.map((v, i) => [v, i]));
@@ -66,15 +68,19 @@ export function Typeahead(props) {
       <FlatList 
         data={props.data.filter(match)}
         initialScrollIndex={index[props.selected]}
+        getItemLayout={(data, index) => (
+          {length: LIST_BUTTON_HEIGHT,
+           offset: LIST_BUTTON_HEIGHT*index,
+           index: index}) }
         ref={(r) => props.fRef && props.fRef(r)}
         renderItem={({item}) => (
           <ListButton 
-            selected={(props.selected === item)}
+            selected={(props.value === item)}
             buttonText=' '
             onPress={() => { props.onValueChange(item)}}>
             <View style={{ flexDirection: 'row', width: 500 }}>
               {/* TODO: highlight matching substring */}
-              <Text style={(props.selected === item) && {color: 'white'}}>
+              <Text style={(props.value === item) && {color: 'white'}}>
                 {item}
               </Text>
             </View>
