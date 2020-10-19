@@ -52,7 +52,7 @@ export default function PersonList() {
         </TouchableOpacity>
       )
     });
-  }, []);
+  }, [contacts]);
 
   return (
     <View style={styles.container}>

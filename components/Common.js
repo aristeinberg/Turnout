@@ -6,7 +6,6 @@ const LIST_BUTTON_HEIGHT = 38;
 export function ListButton(props) {
   function onPress(event) {
     if (props.warn) {
-      // TODO: ask a question
       Alert.alert("Confirmation", props.warn, [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Confirm', style: 'destructive', onPress: () => props.onPress(event) },
