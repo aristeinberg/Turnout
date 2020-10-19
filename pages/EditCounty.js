@@ -51,10 +51,11 @@ export default function EditCounty({route}) {
                  fRef={(r) => (countyRef = r)}
                  value={Counties[county]}
                  placeholder='Search for county directly'
-                 onValueChange={(val) => {
-                   console.log(val, CountyCodes[val]);
-                   setCounty(CountyCodes[val]);
-                   updateContact(contact.id, { county: CountyCodes[val] });
+                 onValueChange={(county) => {
+                   const countyCode = CountyCodes[county.toUpperCase()];
+                   console.log(county, countyCode);
+                   setCounty(countyCode);
+                   updateContact(contact.id, { county: countyCode });
                  } } />
     </View>
   );
