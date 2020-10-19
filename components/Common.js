@@ -67,7 +67,7 @@ export function Typeahead(props) {
             value={searchText} onChangeText={setSearchText} />
       <FlatList 
         data={props.data.filter(match)}
-        initialScrollIndex={index[props.selected]}
+        initialScrollIndex={index[props.value]}
         getItemLayout={(data, index) => (
           {length: LIST_BUTTON_HEIGHT,
            offset: LIST_BUTTON_HEIGHT*index,
