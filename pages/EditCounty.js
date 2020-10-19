@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ContactsContext } from '../contacts';
 import { styles } from '../components/SharedStyles';
 import { SaveButtonRow, Typeahead } from '../components/Common';
-import { CitiesToCounties, Counties } from '../components/PennCities';
+import { CitiesToCounties, Counties, CountyCodes } from '../components/PennCities';
 
 export default function EditCounty({route}) {
   const navigation = useNavigation();
@@ -19,41 +19,36 @@ export default function EditCounty({route}) {
     navigation.navigate("Person Details", {contactId: contact.id});
   }
 
-  const cityData = Object.entries(CitiesToCounties)
-    .map(([city, county]) => ({ key: city, value: county }))
-    .sort((a, b) => a.key.localeCompare(b.key));
+  const cities = Object.keys(CitiesToCounties)
+    .sort((a, b) => a.localeCompare(b));
 
-  const countyData = Object.entries(Counties)
-    .map(([idNum,name]) => ({ key: name, value: idNum }));
-
-  const countyIndexes = {};
-  for (let i = 0; i < countyData.length; i++) {
-    countyIndexes[countyData[i].value] = i;
-  }
+  const counties = Object.values(Counties)
+    .sort((a, b) => a.localeCompare(b));
 
   let countyRef = null;
-  console.log('default:', county, Counties[county]);
 
   return (
     <View style={styles.container}>
-      <Typeahead data={cityData}
+      <Typeahead data={cities}
                  style={{flex: 2, marginBottom: 10}}
                  placeholder='(Optional) search for city to lookup county'
-                 selectedKey={contact.data.city}
-                 onValueChange={(key, val) => {
-                   console.log(key, val, countyIndexes[val]);
-                   countyRef.scrollToIndex({index: countyIndexes[val]});
-                   setCity(key);
-                   setCounty(val);
+                 selected={city}
+                 onValueChange={(val) => {
+                   const countyCode = CitiesToCounties[val];
+                   const countyStr = Counties[countyCode];
+                   const countyIndex = counties.indexOf(countyStr);
+                   setCity(val);
+                   setCounty(countyCode);
+                   countyRef.scrollToIndex({index: countyIndex});
                  } } />
-      <Typeahead data={countyData}
+      <Typeahead data={counties}
                  style={{flex: 2, marginBottom: 10}}
                  fRef={(r) => (countyRef = r)}
-                 selectedKey={Counties[county]}
+                 selected={Counties[county]}
                  placeholder='Search for county directly'
-                 onValueChange={(key, val) => {
-                   console.log(val);
-                   setCounty(val);
+                 onValueChange={(val) => {
+                   console.log(val, CountyCodes[val]);
+                   setCounty(CountyCodes[val]);
                  } } />
       <View style={{flex: 1}}>
         <SaveButtonRow onPress={save} />

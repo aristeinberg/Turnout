@@ -55,6 +55,8 @@ export function Typeahead(props) {
     return (item.key.indexOf(searchText) >= 0);
   }
 
+  const index = Object.fromEntries(props.data.map((v, i) => [v, i]));
+
   return (
     <View style={props.style}>
       <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
@@ -63,21 +65,22 @@ export function Typeahead(props) {
             value={searchText} onChangeText={setSearchText} />
       <FlatList 
         data={props.data.filter(match)}
+        initialScrollIndex={index[props.selected]}
         ref={(r) => props.fRef && props.fRef(r)}
         renderItem={({item}) => (
           <ListButton 
-            selected={(props.selectedKey === item.key)}
+            selected={(props.selected === item)}
             buttonText=' '
-            onPress={() => { props.onValueChange(item.key, item.value)}}>
+            onPress={() => { props.onValueChange(item)}}>
             <View style={{ flexDirection: 'row', width: 500 }}>
               {/* TODO: highlight matching substring */}
-              <Text style={(props.selectedKey === item.key) && {color: 'white'}}>
-                {item.key}
+              <Text style={(props.selected === item) && {color: 'white'}}>
+                {item}
               </Text>
             </View>
           </ListButton>
         )}
-        keyExtractor={(item) => item.key }
+        keyExtractor={(item) => item }
       />
     </View>
   );
