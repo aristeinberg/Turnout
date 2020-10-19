@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Contacts from 'expo-contacts';
+import { Counties, CountyCodes } from './components/PennCities';
 
 export const ContactsContext = React.createContext();
 
@@ -8,80 +9,6 @@ export const ContactSources = {
   MANUAL: 'man',
   FACEBOOK: 'fb',
 };
-
-export const COUNTIES = {
-  0: "Unknown",
-  2290: "ADAMS",
-  2291: "ALLEGHENY",
-  2292: "ARMSTRONG",
-  2293: "BEAVER",
-  2294: "BEDFORD",
-  2295: "BERKS",
-  2296: "BLAIR",
-  2297: "BRADFORD",
-  2298: "BUCKS",
-  2299: "BUTLER",
-  2300: "CAMBRIA",
-  2301: "CAMERON",
-  2302: "CARBON",
-  2303: "CENTRE",
-  2304: "CHESTER",
-  2305: "CLARION",
-  2306: "CLEARFIELD",
-  2307: "CLINTON",
-  2308: "COLUMBIA",
-  2309: "CRAWFORD",
-  2310: "CUMBERLAND",
-  2311: "DAUPHIN",
-  2312: "DELAWARE",
-  2313: "ELK",
-  2314: "ERIE",
-  2315: "FAYETTE",
-  2316: "FOREST",
-  2317: "FRANKLIN",
-  2318: "FULTON",
-  2319: "GREENE",
-  2320: "HUNTINGDON",
-  2321: "INDIANA",
-  2322: "JEFFERSON",
-  2323: "JUNIATA",
-  2324: "LACKAWANNA",
-  2325: "LANCASTER",
-  2326: "LAWRENCE",
-  2327: "LEBANON",
-  2328: "LEHIGH",
-  2329: "LUZERNE",
-  2330: "LYCOMING",
-  2331: "McKEAN",
-  2332: "MERCER",
-  2333: "MIFFLIN",
-  2334: "MONROE",
-  2335: "MONTGOMERY",
-  2336: "MONTOUR",
-  2337: "NORTHAMPTON",
-  2338: "NORTHUMBERLAND",
-  2339: "PERRY",
-  2340: "PHILADELPHIA",
-  2341: "PIKE",
-  2342: "POTTER",
-  2343: "SCHUYLKILL",
-  2344: "SNYDER",
-  2345: "SOMERSET",
-  2346: "SULLIVAN",
-  2347: "SUSQUEHANNA",
-  2348: "TIOGA",
-  2349: "UNION",
-  2350: "VENANGO",
-  2351: "WARREN",
-  2352: "WASHINGTON",
-  2353: "WAYNE",
-  2354: "WESTMORELAND",
-  2355: "WYOMING",
-  2356: "YORK",
-};
-
-export const COUNTY_CODES = 
-  Object.fromEntries(Object.entries(COUNTIES).map(([k,v]) => [v, k]));
 
 export const VOTE_STATUSES = {
   [null]: 'Unknown',
@@ -221,20 +148,21 @@ export default class Contact {
 
   getCountyCode() {
     if (this.data.county) {
-      if (this.data.county in COUNTIES) {
+      if (this.data.county in Counties) {
         return this.data.county;
       }
-      return COUNTY_CODES[this.data.county.toUpperCase()] || 0;
+      return CountyCodes[this.data.county.toUpperCase()] || 0;
     }
     return 0;
   }
 
   getCountyName() {
     if (this.data.county) {
-      if (this.data.county.toUpperCase() in COUNTY_CODES) {
+      if (this.data.county.toUpperCase &&
+          this.data.county.toUpperCase() in CountyCodes) {
         return this.data.county;
       }
-      return COUNTIES[this.data.county] || "";
+      return Counties[this.data.county] || "";
     }
     return "Unknown";
   }

@@ -1,8 +1,5 @@
 - next steps:
   - [ ] analytics?? would be nice to track impact in some way!
-  - [ ] help you figure out what county they live in:
-     - [ ] lookup from a city 
-     - [ ] show their FB profile to find their city
   - [ ] fix styling on webviews to fit more naturally into the page
   - [ ] track facebook login status and present a different url/UI for logging in the first time
   - [ ] display the time the vote status was last updated
@@ -17,6 +14,8 @@
   - [ ] help figuring out birthdays:
      - [ ] automatically navigate the facebook profile to the basic info section
      - [ ] try to scan your phone calendar for birthdates
+  - [ ] help you figure out what county they live in:
+     - [ ] show their FB profile to find their city
   - [ ] help contacting people
      - [ ] link/webview to contact on FB messenger
 

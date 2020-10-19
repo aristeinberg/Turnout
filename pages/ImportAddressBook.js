@@ -19,8 +19,6 @@ function ContactList(props) {
   }
 
   // TODO: search box if list is > n
-  // TODO: why doesn't this update when you click someone?
-  // TODO: improved styling
   return (
     <FlatList 
       data={data}
