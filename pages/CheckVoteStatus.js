@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { Picker, ScrollView, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { ScrollView, Text, View, ActivityIndicator } from 'react-native';
+import { Picker } from '@react-native-community/picker';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 

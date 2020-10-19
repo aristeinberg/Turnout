@@ -10,10 +10,12 @@
   "dependencies": {
     "@react-native-community/datetimepicker": "3.0.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/picker": "^1.8.1",
     "@react-navigation/native": "^5.7.6",
     "@react-navigation/stack": "^5.9.3",
     "expo": "~39.0.2",
     "expo-contacts": "~8.5.0",
+    "expo-random": "~9.0.0",
     "expo-status-bar": "~1.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -24,8 +26,7 @@
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "10.7.0",
-    "expo-random": "~9.0.0"
+    "react-native-webview": "10.7.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
