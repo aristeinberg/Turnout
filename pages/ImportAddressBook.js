@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Text, TouchableOpacity, View, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, View, FlatList } from 'react-native';
 import * as Contacts from 'expo-contacts';
 
 import Contact, { ContactsContext, ContactSources } from '../contacts';
@@ -40,7 +39,6 @@ export default function ImportAddressBook(props) {
   const { contacts, addToContacts } = useContext(ContactsContext);
   const [ pennAddresses, setPennAddresses ] = useState(null);
   const [ notPennAddresses, setNotPennAddresses ] = useState(null);
-  const navigation = useNavigation(); // TODO: streamline navigation when complete
 
   useEffect(() => { importContacts(); }, []);
   

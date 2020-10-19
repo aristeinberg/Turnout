@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -33,9 +33,11 @@ export default function PersonDetails({route}) {
     return navigation.navigate("Your Contacts");
   }
 
-  navigation.setOptions({
-    title: contact.name,
-  })
+  useEffect(() => {
+    navigation.setOptions({
+      title: contact.name,
+    })
+  }, []);
 
   return (
     <View style={styles.container}>

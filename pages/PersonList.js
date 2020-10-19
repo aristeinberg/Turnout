@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text, View, FlatList, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -41,16 +41,18 @@ export default function PersonList() {
   function navigateToImportContacts() {
     return navigation.navigate("Import Contacts");
   }
-  navigation.setOptions({
-    headerRight: () => (
-      <TouchableOpacity onPress={navigateToImportContacts}>
-        <Text style={{color:'#fff', padding: 10 }}>
-          {Object.keys(contacts).length == 0 ? "Add" : "Edit"}
-        </Text>
-      </TouchableOpacity>
-    )
-  })
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={navigateToImportContacts}>
+          <Text style={{color:'#fff', padding: 10 }}>
+            {Object.keys(contacts).length == 0 ? "Add" : "Edit"}
+          </Text>
+        </TouchableOpacity>
+      )
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
