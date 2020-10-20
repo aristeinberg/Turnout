@@ -76,7 +76,7 @@ export default function VotingStatus({route}) {
       <Text>Select the status you see above from this list:</Text>
       <Picker selectedValue={voteStatus} onValueChange={setVoteStatus}>{
         Object.entries(VOTE_STATUSES).map(([key,description]) => (
-          <Picker.Item label={description} value={key} />
+          <Picker.Item label={description} value={key} key={key} />
         ))
       }</Picker>
       <SaveButtonRow onPress={save} />
