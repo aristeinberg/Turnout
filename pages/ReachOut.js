@@ -43,7 +43,7 @@ export default function ReachOut({route}) {
       type: 'TEXT',
       voteStatus: contact.data.voteStatus,
     });
-    Communications.text(phone, keyMessage);
+    Communications.textWithoutEncoding(phone, keyMessage);
   }
   function call() {
     Amplitude.logEventWithProperties('REACH_OUT', {
