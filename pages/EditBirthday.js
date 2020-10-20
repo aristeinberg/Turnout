@@ -34,7 +34,7 @@ export default function EditBirthday({route}) {
   const { contacts, updateContact } = useContext(ContactsContext);
   const contact = contacts[route.params.contactId];
   const [selectedDate, setSelectedDate] =
-    useState(new Date(contact.data.birthYear || 2020,
+    useState(new Date(contact.getFourDigitBirthYear() || 2020,
                       contact.data.birthMonth || 0,
                       contact.data.birthDay || 1));
 
