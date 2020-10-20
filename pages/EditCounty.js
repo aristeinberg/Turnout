@@ -14,11 +14,6 @@ export default function EditCounty({route}) {
   const [county, setCounty] = useState(contact.getCountyCode());
   const [city, setCity] = useState(contact.data.city);
 
-  function save() {
-    updateContact(contact.id, { city: city, county : county, });
-    navigation.navigate("Person Details", {contactId: contact.id});
-  }
-
   const cities = Object.keys(CitiesToCounties)
     .sort((a, b) => a.localeCompare(b));
 

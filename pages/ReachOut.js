@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import * as Amplitude from 'expo-analytics-amplitude';
+import React, { useState, useContext } from 'react';
+import { Text, TouchableOpacity, View, TextInput } from 'react-native';
 import Communications from 'react-native-communications';
 
 import { ContactsContext } from '../contacts';
 import { styles } from '../components/SharedStyles'
 
 export default function ReachOut({route}) {
-  const { contacts } = useContext(ContactsContext);
+  const { contacts, updateContact } = useContext(ContactsContext);
   const contact = contacts[route.params.contactId];
+  const [phone, setPhone] = useState(contact.data.phone);
+  const [emailAddress, setEmailAddress] = useState(contact.data.email);
 
   let keyMessage = "Hi, I'm concerned about this election so have been checking the vote status of my friends in PA through an app called Drive Turnout.\n\n";
   switch (contact.data.voteStatus) {
@@ -36,13 +39,24 @@ export default function ReachOut({route}) {
   }
 
   function text() {
-    Communications.text(contact.data.phone, keyMessage)
+    Amplitude.logEvent('TEXT');
+    Communications.text(phone, keyMessage);
   }
   function call() {
-    Communications.call(contact.data.phone);
+    Amplitude.logEvent('CALL');
+    Communications.phonecall(phone, false);
   }
   function email() {
-    Communications.email(contact.data.email, null, null, 'checking in', keyMessage)
+    Amplitude.logEvent('EMAIL');
+    Communications.email([emailAddress], null, null, 'checking in', keyMessage);
+  }
+  function updatePhoneNumber(val) {
+    setPhone(val);
+    updateContact(contact.id, { phone: val });
+  }
+  function updateEmailAddress(val) {
+    setEmailAddress(val);
+    updateContact(contact.id, { email: val });
   }
 
   return (
@@ -53,11 +67,26 @@ export default function ReachOut({route}) {
         something like this:
       </Text>
       <View style={styles.messagePreview}><Text>{ keyMessage }</Text></View>
+      <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
+            autoCorrect={false}
+            autoCompleteType='tel'
+            keyboardType='phone-pad'
+            placeholder="Phone number"
+            value={phone} onChangeText={updatePhoneNumber} />
       <TouchableOpacity style={[styles.button, styles.large]} onPress={text}>
         <Text style={styles.large}>Text them</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, styles.large]} onPress={call}>
         <Text style={styles.large}>Call them</Text>
+      </TouchableOpacity>
+      <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
+            autoCorrect={false}
+            autoCompleteType='email'
+            keyboardType='email-address'
+            placeholder="Email"
+            value={emailAddress} onChangeText={updateEmailAddress} />
+      <TouchableOpacity style={[styles.button, styles.large]} onPress={email}>
+        <Text style={styles.large}>Email them</Text>
       </TouchableOpacity>
     </View>
   )

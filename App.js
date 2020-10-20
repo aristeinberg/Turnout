@@ -1,3 +1,4 @@
+import * as Amplitude from 'expo-analytics-amplitude';
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -30,6 +31,7 @@ export default function App() {
 
   useEffect(() => {
     loadContacts();
+    Amplitude.initialize('e7f3f95efb0bca7a310f9cd2d253449a');
   }, []);
 
   async function setContacts(contacts) {
@@ -42,6 +44,9 @@ export default function App() {
   }
 
   async function updateContact(id, data) {
+    Amplitude.logEventWithProperties('UPDATE_CONTACT', {
+      field: Object.keys(data)[0],
+    });
     const newContact = Contact.deserialize(contacts[id].serialize()); // deep copy
     Object.assign(newContact.data, data);
     newContact.data.modified = new Date();
@@ -50,10 +55,16 @@ export default function App() {
     setContacts(newContacts);
   }
 
-  function addToContacts(newContacts) {
+  function addToContacts(newContact) {
+    Amplitude.logEventWithProperties('ADD_CONTACT', {
+      source: newContact.source
+    });
+    Amplitude.setUserProperties({
+      numContacts: Object.keys(contacts).length + 1
+    });
     setContacts({
       ...contacts,
-      ...newContacts
+      [newContact.id]: newContact
     });
   }
 
@@ -66,6 +77,7 @@ export default function App() {
   function clearContacts() {
     setContacts({});
   }
+
 
   return (
     <ContactsContext.Provider value={{

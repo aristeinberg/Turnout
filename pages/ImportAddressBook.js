@@ -13,7 +13,7 @@ function ContactList(props) {
   const [data, setData] = useState(props.data.sort((a,b) => a.name.localeCompare(b.name)));
 
   function select(item) {
-    props.addToContacts({[item.id]: item});
+    props.addToContacts(item);
     setData(data.filter((i) => i.id != item.id));
   }
 

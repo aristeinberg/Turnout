@@ -49,9 +49,7 @@ export default function ImportContacts({route}) {
     let contact = new Contact(id, contactName, ContactSources.MANUAL);
     contact.addDataFromAddressBook(await contact.lookupInAddressBook());
     console.log('adding contact', id, contact)
-    addToContacts({
-      [id]: contact,
-    })
+    addToContacts(contact);
     setContactName('');
     await sleep(250); // hack - make sure the person can save before navigating to their details
     navigation.navigate("Person Details", {contactId: id});
@@ -70,9 +68,7 @@ export default function ImportContacts({route}) {
       let contact = new Contact(url2, name, ContactSources.FACEBOOK, {socialUrl: url2});
       alert('Adding contact: ' + name);
       contact.addDataFromAddressBook(await contact.lookupInAddressBook());
-      addToContacts({
-        [url]: contact,
-      });
+      addToContacts(contact);
       return;
     }
     if (url.includes('/search/top/')) {

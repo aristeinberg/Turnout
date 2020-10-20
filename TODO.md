@@ -1,5 +1,4 @@
 - next steps:
-  - [ ] analytics?? would be nice to track impact in some way!
   - [ ] if they already have a city set up (e.g. from the address book), select county automatically
   - [ ] track facebook login status and present a different url/UI for logging in the first time
   - [ ] display the time the vote status was last updated
