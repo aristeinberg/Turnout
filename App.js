@@ -31,7 +31,11 @@ export default function App() {
 
   useEffect(() => {
     loadContacts();
-    Amplitude.initialize('e7f3f95efb0bca7a310f9cd2d253449a');
+    if (__DEV__) {
+      Amplitude.initialize('e7f3f95efb0bca7a310f9cd2d253449a');
+    } else {
+      Amplitude.initialize('73614b74fd0c321cbbb7f05db8a92a1e');
+    }
   }, []);
 
   async function setContacts(contacts) {
@@ -44,9 +48,13 @@ export default function App() {
   }
 
   async function updateContact(id, data) {
-    Amplitude.logEventWithProperties('UPDATE_CONTACT', {
+    const logProperties = {
       field: Object.keys(data)[0],
-    });
+    };
+    if ('voteStatus' in data) {
+      logProperties['voteStatus'] = data['voteStatus'];
+    }
+    Amplitude.logEventWithProperties('UPDATE_CONTACT', logProperties);
     const newContact = Contact.deserialize(contacts[id].serialize()); // deep copy
     Object.assign(newContact.data, data);
     newContact.data.modified = new Date();

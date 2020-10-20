@@ -39,15 +39,24 @@ export default function ReachOut({route}) {
   }
 
   function text() {
-    Amplitude.logEvent('TEXT');
+    Amplitude.logEventWithProperties('REACH_OUT', {
+      type: 'TEXT',
+      voteStatus: contact.data.voteStatus,
+    });
     Communications.text(phone, keyMessage);
   }
   function call() {
-    Amplitude.logEvent('CALL');
+    Amplitude.logEventWithProperties('REACH_OUT', {
+      type: 'CALL',
+      voteStatus: contact.data.voteStatus,
+    });
     Communications.phonecall(phone, false);
   }
   function email() {
-    Amplitude.logEvent('EMAIL');
+    Amplitude.logEventWithProperties('REACH_OUT', {
+      type: 'EMAIL',
+      voteStatus: contact.data.voteStatus,
+    });
     Communications.email([emailAddress], null, null, 'checking in', keyMessage);
   }
   function updatePhoneNumber(val) {
