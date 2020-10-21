@@ -24,6 +24,10 @@
         "NSContactsUsageDescription": "This app uses your address book to help you find people to encourage to vote."
       }
     },
+    "android": {
+      "package": "com.driveturnout.Turnout",
+      "versionCode": 1
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     }
