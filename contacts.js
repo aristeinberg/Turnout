@@ -188,7 +188,8 @@ export default class Contact {
       // when we want to use this, and it's better to not need to deal
       // with multiple numbers. the field is useful though for non-address
       // book imported contacts.
-      this.data.phone = c.phoneNumbers[0].digits;
+      this.data.phone = c.phoneNumbers[0].digits ||
+        c.phoneNumbers[0].number.replace(/[^0-9]/g, '');
     }
     if (c.emails && !this.data.email) {
       // same comment as phone number
@@ -203,6 +204,9 @@ export default class Contact {
     }
     if (c.addresses) {
       let filtered = c.addresses.filter((a) => {
+        if (!a.region) {
+          return false;
+        }
         let region = a.region.toLowerCase();
         return (region == 'pennsylvania' || region == 'pa');
       });

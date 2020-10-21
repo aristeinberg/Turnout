@@ -58,10 +58,12 @@ export default function ImportAddressBook(props) {
       function isPA(c) {
         return (
           (c.phoneNumbers &&
-           c.phoneNumbers.filter(p => p.digits &&
-                                       p.digits.match(PA_NUM_REGEX)).length > 0) ||
+           c.phoneNumbers.filter(p => {
+             if (p.digits) return p.digits.match(PA_NUM_REGEX);
+             if (p.number) return p.number.replace(/[^0-9]/g, '').match(PA_NUM_REGEX);
+           }).length > 0) ||
           (c.addresses &&
-           c.addresses.filter(a => a.region.toLowerCase() == 'pennsylvania' || a.region.toLowerCase() == 'pa').length > 0)
+           c.addresses.filter(a => a.region && (a.region.toLowerCase() == 'pennsylvania' || a.region.toLowerCase() == 'pa')).length > 0)
         );
       }
 
