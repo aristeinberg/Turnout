@@ -26,7 +26,10 @@
     },
     "android": {
       "package": "com.driveturnout.Turnout",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": [
+        "READ_CONTACTS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
