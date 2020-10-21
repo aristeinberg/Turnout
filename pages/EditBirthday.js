@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
@@ -37,12 +37,15 @@ export default function EditBirthday({route}) {
     useState(new Date(contact.getFourDigitBirthYear() || 2020,
                       contact.data.birthMonth || 0,
                       contact.data.birthDay || 1));
+  const [showPicker, setShowPicker] = useState(false);
 
-  function save() {
+  function save(date) {
+    if (!date) return;
+
     updateContact(contact.id, {
-      birthYear: selectedDate.getYear(),
-      birthMonth: selectedDate.getMonth(),
-      birthDay: selectedDate.getDate()
+      birthYear: date.getYear(),
+      birthMonth: date.getMonth(),
+      birthDay: date.getDate()
     });
     navigation.navigate("Person Details", {contactId: contact.id});
   }
@@ -50,12 +53,29 @@ export default function EditBirthday({route}) {
   return (
     <>
       <View style={{backgroundColor: 'white', padding: 10, marginBottom: 20}}>
-        <DateTimePicker
-          mode="date"
-          onChange={(event, date) => setSelectedDate(date)}
-          value={selectedDate}
-        />
-        <SaveButtonRow onPress={save} />
+        { Platform.OS == 'ios' ? (
+          <>
+            <DateTimePicker
+              mode="date"
+              onChange={(event, date) => setSelectedDate(date)}
+              value={selectedDate}
+            />
+            <SaveButtonRow onPress={() => save(selectedDate)} />
+          </>
+        ) : (
+          <>
+            <TouchableOpacity onPress={() => setShowPicker(true)}>
+              <Text style={ styles.link }>Set birthday (currently {contact.getBirthdayStr()})</Text>
+            </TouchableOpacity>
+            { showPicker &&
+              <DateTimePicker
+                mode="date"
+                onChange={(event, date) => { save(date); setShowPicker(false); }}
+                value={selectedDate}
+              />
+            }
+          </>
+        )}
       </View>
       <EmbedSocialMedia contact={contact} />
     </>

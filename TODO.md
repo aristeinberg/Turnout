@@ -1,12 +1,8 @@
 - next steps:
-  - [ ] fix android!
   - [ ] track facebook login status and present a different url/UI for logging in the first time
   - [ ] display the time the vote status was last updated
   - [ ] track when you last reached out, take notes on the result and/or update their vote status
   - [ ] fix styling on webviews to fit more naturally into the page
-
-- android:
-  - [ ] date/time picker in birthday screen is weird, pops open, and crashes if you hit "cancel"
 
 - polish:
   - [ ] get rid of the remaining "save" buttons - make everything save automatically on update

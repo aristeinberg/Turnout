@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Alert, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Alert, TextInput, FlatList, Platform } from 'react-native';
 
-const LIST_BUTTON_HEIGHT = 38;
+// ideally should calculate this dynamically. on android for some reason it
+// fluctuates between 40.0 and 40.4 in height
+const LIST_BUTTON_HEIGHT = Platform.OS == 'ios' ? 38 : 40.2;
 
 export function ListButton(props) {
   function onPress(event) {

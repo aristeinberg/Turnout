@@ -39,8 +39,8 @@ export const styles = StyleSheet.create({
     fontSize: 18,
   },
   link: {
-    color: '#55dff1',
-    //color: '#007aff',
+    //color: '#55dff1',
+    color: '#007aff',
   },
   personDetails: {
     flexDirection: 'column',
