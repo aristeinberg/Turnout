@@ -7,8 +7,10 @@ We'll help you find those people and make sure that their votes count.
 The 2020 presidential election is likely to hinge on the state of
 Pennsylvania, so we're focused there for now. Pennsylvania has complicated
 rules for mail-in ballots (search around for "naked ballots"), so if your
-friends aren't careful, it would be easy to have their ballots not count. You
-can help them out - you can look up the status of their ballots on the
+friends aren't careful, it would be easy to have their ballots not count.
+The NY Times [ranked](https://www.nytimes.com/2020/10/19/us/politics/how-prepared-are-these-7-battlegrounds-for-the-election-a-readiness-report.html) 
+Pennsylvania as the battleground state most likely to have issues this year.
+You can help your friends out - you can look up the status of their ballots on the
 Pennsylvania web site and reach out to those who might be having trouble.
 
 The Drive Turnout app helps you manage all this. We can help you keep track
