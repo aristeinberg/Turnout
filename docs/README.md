@@ -1,12 +1,20 @@
 # Drive Turnout
 
-Drive Turnout is now live with a focus on Pennsylvania voters. The app will
-help you keep track of all your friends in Pennsylvania to make sure they
-vote successfully.
+Drive Turnout empowers you to make a difference this election. Even if you
+don't live in a swing state, chances you, probably know some people who do.
+We'll help you find those people and make sure that their votes count.
 
-Drive Turnout helps you make sure your friends' votes count. You can use
-state-wide web sites to check whether your friends have already voted and, if
-so, to make sure that their ballots were processed successfully.
+The 2020 presidential election is likely to hinge on the state of
+Pennsylvania, so we're focused there for now. Pennsylvania has complicated
+rules for mail-in ballots (search around for "naked ballots"), so if your
+friends aren't careful, it would be easy to have their ballots not count. You
+can help them out - you can look up the status of their ballots on the
+Pennsylvania web site and reach out to those who might be having trouble.
+
+The Drive Turnout app helps you manage all this. We can help you keep track
+of which of your contacts are in PA, which ones have already voted
+successfully vs which ones you need to check up on, etc. You're in full
+control of any communication you want to do with those people.
 
 ### A note about privacy
 
