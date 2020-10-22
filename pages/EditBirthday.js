@@ -1,32 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext, ContactSources } from '../contacts';
 import { styles } from '../components/SharedStyles';
 import { SaveButtonRow } from '../components/Common';
+import { EmbedFacebook } from '../components/FacebookView';
 
-function EmbedSocialMedia(props) {
-  let defSMUrl = props.contact.data.socialUrl;
-  if (defSMUrl && !defSMUrl.includes('?')) {
-    defSMUrl += '/about';
+function getFbUrl(contact) {
+  if (contact.data.socialUrl) {
+    if (!contact.data.socialUrl.includes('?')) {
+      return contact.data.socialUrl + '/about'
+    }
+    return contact.data.socialUrl;
   }
-
-  const [socialMediaUrl, setSocialMediaUrl] = useState(defSMUrl);
-
-  const url = socialMediaUrl ||
-    'https://www.facebook.com/search/top?q=' + encodeURIComponent(props.contact.name);
-  console.log('url is ', url)
-  return (
-    <View style={{ flexDirection: 'column', flex: 1, padding: 10, backgroundColor: 'white' }}>
-      <Text>Not sure of their birthday? See if it's listed on Facebook. It'd be in their "About" section under "Basic Info"...</Text>
-      <View style={styles.webview}>
-        <WebView source={{ uri: url }} sharedCookiesEnabled={true} />
-      </View>
-    </View>
-  );
+  return 'https://m.facebook.com/search/top?q=' + encodeURIComponent(contact.name);
 }
 
 export default function EditBirthday({route}) {
@@ -50,9 +39,11 @@ export default function EditBirthday({route}) {
     navigation.navigate("Person Details", {contactId: contact.id});
   }
 
+  const fbText = `Not sure of their birthday? See if it's listed on Facebook. It'd be in their "About" section under "Basic Info."`;
+
   return (
-    <>
-      <View style={{backgroundColor: 'white', padding: 10, marginBottom: 20}}>
+    <View style={styles.container}>
+      <View style={{backgroundColor: 'white', padding: 10}}>
         { Platform.OS == 'ios' ? (
           <>
             <DateTimePicker
@@ -77,7 +68,9 @@ export default function EditBirthday({route}) {
           </>
         )}
       </View>
-      <EmbedSocialMedia contact={contact} />
-    </>
+      <EmbedFacebook url={getFbUrl(contact)}
+        loggedInText={fbText}
+        loggedOutText={fbText + " (You will need to login to Facebook.)"} />
+    </View>
   );
 }

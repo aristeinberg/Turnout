@@ -5,6 +5,10 @@ import { StyleSheet, Text, TouchableOpacity, View, Alert, TextInput, FlatList, P
 // fluctuates between 40.0 and 40.4 in height
 const LIST_BUTTON_HEIGHT = Platform.OS == 'ios' ? 38 : 40.2;
 
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export function ListButton(props) {
   function onPress(event) {
     if (props.warn) {

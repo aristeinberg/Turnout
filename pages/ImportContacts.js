@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { WebView } from 'react-native-webview';
 import * as Random from 'expo-random';
 
 import Contact, { ContactsContext, ContactSources } from '../contacts';
 import { styles } from '../components/SharedStyles';
-import { ListButton } from '../components/Common';
+import { ListButton, sleep } from '../components/Common';
+import { EmbedFacebook } from '../components/FacebookView';
 
 function SaveCancelButtons(props) {
   return (
@@ -19,10 +19,6 @@ function SaveCancelButtons(props) {
       </TouchableOpacity>
     </View>
   );
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export default function ImportContacts({route}) {
@@ -55,36 +51,24 @@ export default function ImportContacts({route}) {
     navigation.navigate("Person Details", {contactId: id});
   }
 
-  let fbRef = null; // this will point to the fb webview
   const facebookUrl = 'https://m.facebook.com/search/top/?q=friends%20who%20live%20in%20pennsylvania&ref=content_filter&source=typeahead'
-  async function handleFbNavStateChange(newNavState) {
-    // wait a couple of seconds to make sure the page has loaded
-    await sleep(1000);
-    
-    const {url, title, data} = newNavState;
-    const [command, url2, name] = (data || '').split('||');
-    console.log('callback', command, url, url2, name);
-    if (command == 'PROF') {
-      let contact = new Contact(url2, name, ContactSources.FACEBOOK, {socialUrl: url2});
-      alert('Adding contact: ' + name);
-      contact.addDataFromAddressBook(await contact.lookupInAddressBook());
-      addToContacts(contact);
-      return;
-    }
-    if (url.includes('/search/top/')) {
-      fbRef.injectJavaScript(`document.querySelectorAll('[aria-label*="See All"]')[0].click()`);
-      return;
-    }
-    fbRef.injectJavaScript(`(function() {
-      if (document.querySelectorAll('[data-sigil="timeline-cover"]').length == 1) {
-      window.ReactNativeWebView.postMessage('PROF||' + window.location.href + '||' + 
-        document.querySelectorAll('[data-sigil="MBackNavBarClick"]')[0].innerText);
-    } else {
-      //window.ReactNativeWebView.postMessage('TEST||HI||BYE');
-    }
-    return true;
-  })();`);
+  async function addFbContact(data) {
+    console.log('message', data);
+    const [command, url, name] = data.split('||');
+    let contact = new Contact(url, name, ContactSources.FACEBOOK, { socialUrl: url });
+    alert('Adding contact: ' + name);
+    contact.addDataFromAddressBook(await contact.lookupInAddressBook());
+    addToContacts(contact);
   }
+
+  const loggedInText = 
+    "Navigate to someone's Facebook profile to have it get added " +
+    "to your list automatically.";
+
+  const loggedOutText = 
+    "Log into Facebook to see your friends who live in Pennsylvania. " +
+    "Then navigate to someone's Facebook profile to have it get added " +
+    "to your list automatically.";
 
   return (
     <View style={styles.container} keyboardShouldPersistTaps='handled'>
@@ -103,43 +87,20 @@ export default function ImportContacts({route}) {
       <ListButton onPress={() => setExpandFacebook(!expandFacebook)} style={styles.buttonRow}
                   text='Add from Facebook' />
       { expandFacebook &&
-        <View style={{padding: 10}}>
-          <View style={styles.webview}>
-            <WebView style={{flex: 0, height: 400}}
-                     automaticallyAdjustContentInsets={false}
-                     ref={ref => (fbRef = ref)}
-                     source={{ uri: facebookUrl }}
-                     sharedCookiesEnabled={true}
-                     onMessage={(event) => handleFbNavStateChange(event.nativeEvent)}
-                     onNavigationStateChange={handleFbNavStateChange}
-                     /* 
-                      * facebook doesn't trigger full page loads when you
-                      * navigate around. hence, need to hack the react webview
-                      * to get it to trigger navigation events.
-                      * i found the below code here:
-                     https://github.com/react-native-webview/react-native-webview/issues/24 */
-                     injectedJavaScript={`
-                     (function() {
-                       function wrap(fn) {
-                         return function wrapper() {
-                           var res = fn.apply(this, arguments);
-                           window.ReactNativeWebView.postMessage('navigationStateChange');
-                           return res;
-                         }
-                       }
-                 
-                       history.pushState = wrap(history.pushState);
-                       history.replaceState = wrap(history.replaceState);
-                       window.addEventListener('popstate', function() {
-                         window.ReactNativeWebView.postMessage('navigationStateChange');
-                       });
-                     })();
-                     true;
-                   `}
-            />
-          </View>
-          <Text>Navigate to a Facebook profile to have it get added to your list.</Text>
-        </View>
+        <EmbedFacebook url={facebookUrl} 
+          onMessage={addFbContact}
+          onPageLoad={
+            (ref) => ref.injectJavaScript(
+              `(function() {
+                 if (document.querySelectorAll('[data-sigil="timeline-cover"]').length == 1) {
+                   window.ReactNativeWebView.postMessage('PROF||' + window.location.href + '||' + 
+                     document.querySelectorAll('[data-sigil="MBackNavBarClick"]')[0].innerText);
+                 }
+                 return true;
+               })();`)
+          }
+          loggedInText={loggedInText}
+          loggedOutText={loggedOutText} />
       }
       <ListButton warn='Are you sure you want to remove your whole contact list?'
                   onPress={clearContactsAndGoBack}

@@ -11,14 +11,16 @@ export const styles = StyleSheet.create({
     margin: 5,
   },
   webview: {
-    borderWidth: 2,
-    borderColor: '#888',
-    flexDirection: 'row',
-    height: 400,
+    borderTopWidth: 2,
+    borderTopColor: '#eee',
+    borderBottomWidth: 2,
+    borderBottomColor: '#eee',
+    flex: 1,
   },
   container: {
     flex: 1,
-    paddingVertical: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
     backgroundColor: '#f7f7f7',
   },
   large: {

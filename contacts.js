@@ -231,7 +231,7 @@ export default class Contact {
         data = await Contacts.getContactByIdAsync(this.id, fields);
       } else {
         const allContacts = await Contacts.getContactsAsync({ name: this.name, fields: fields });
-        console.log(allContacts)
+        console.log('found in address book:', allContacts);
         const results = allContacts.data.filter((c) => c.name && c.name.toLowerCase() == this.name.toLowerCase());
         if (results.length > 0) data = results[0];
       }
