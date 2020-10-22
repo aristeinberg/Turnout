@@ -1,7 +1,6 @@
 - next steps:
   - [ ] display the time the vote status was last updated
   - [ ] track when you last reached out, take notes on the result and/or update their vote status
-  - [ ] fix styling on webviews to fit more naturally into the page
   - [ ] provide a tip about when it's too late to mail in ballots on reachout page
   - [ ] provide a link to 866ourvote for help if they have ballot problems
 
@@ -22,4 +21,4 @@
 - bugs:
   - [ ] if i try to auto-submit the PA ballot checker form, for some reason it gets into a refresh loop, so for now auto-submission is disabled.
   - [ ] is the back nav button missing its "<"?
-  - [ ] weird scroll bar middle of birthday webview
+  - [ ] weird scroll bar in the middle of the birthday FB webview

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { ScrollView, Text, View, ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
@@ -47,9 +47,11 @@ export default function VotingStatus({route}) {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text>Use this page to check on their ballot status: </Text>
-      <View style={[styles.webview, {margin: 10, height: 300}]}>
+    <View style={styles.container}>
+      <Text style={{margin: 10}}>
+        Use this page to check on their ballot status and then record it below:
+      </Text>
+      <View style={styles.webview}>
         <WebView source={{ uri: "https://www.pavoterservices.pa.gov/Pages/BallotTracking.aspx"}}
                 ref={(r) => (webref = r)}
                 onLoadStart={() => (setSpinnerVisible(true))}
@@ -61,25 +63,26 @@ export default function VotingStatus({route}) {
         {spinnerVisible && (
           <ActivityIndicator
             style={{
-            flex: 1,
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            position: 'absolute',
-            alignItems: 'center',
-            justifyContent: 'center' }}
+              flex: 1,
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
             size="large"
           />
         )}
       </View>
-      <Text>Select the status you see above from this list:</Text>
+      <Text style={{margin: 10}}>Select the status you see above from this list:</Text>
       <Picker selectedValue={voteStatus} onValueChange={setVoteStatus}>{
         Object.entries(VOTE_STATUSES).map(([key,description]) => (
           <Picker.Item label={description} value={key} key={key} />
         ))
       }</Picker>
       <SaveButtonRow onPress={save} />
-    </ScrollView>
+    </View>
   );
 }
