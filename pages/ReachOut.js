@@ -1,8 +1,9 @@
 import * as Amplitude from 'expo-analytics-amplitude';
 import React, { useState, useContext } from 'react';
-import { Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Text, TouchableOpacity, View, TextInput, Linking, Clipboard, Alert } from 'react-native';
 import Communications from 'react-native-communications';
 import { useNavigation } from '@react-navigation/native';
+import { URL } from 'react-native-url-polyfill';
 
 import { ContactsContext } from '../contacts';
 import { styles } from '../components/SharedStyles'
@@ -66,6 +67,27 @@ export default function ReachOut({route}) {
     Communications.email([emailAddress], null, null, 'checking in', keyMessage);
     setAttemptedOutreach(true);
   }
+  async function messenger() {
+    Amplitude.logEventWithProperties('REACH_OUT', {
+      type: 'MESSENGER',
+      voteStatus: contact.data.voteStatus,
+    });
+    const socialUrl = new URL(contact.data.socialUrl);
+    let messengerUrl = 'https://m.me';
+    if (socialUrl.pathname != '/profile.php') {
+      messengerUrl += socialUrl.pathname;
+    } else {
+      messengerUrl += '/' + socialUrl.searchParams.get('id');
+    }
+    console.log(socialUrl, socialUrl.pathname, messengerUrl);
+    Alert.alert('Note',
+      'We will copy the message to the clipboard so you can paste it from inside of Messenger.',
+      [{ text: 'OK', onPress: async function() {
+          Clipboard.setString(keyMessage);
+          await Linking.openURL(messengerUrl);
+          setAttemptedOutreach(true);
+        }}]);
+  }
   function updatePhoneNumber(val) {
     setPhone(val);
     updateContact(contact.id, { phone: val });
@@ -115,6 +137,11 @@ export default function ReachOut({route}) {
           <TouchableOpacity style={[styles.button, styles.large]} onPress={email}>
             <Text style={styles.large}>Email them</Text>
           </TouchableOpacity>
+          { contact.data.socialUrl && (
+            <TouchableOpacity style={[styles.button, styles.large]} onPress={messenger}>
+              <Text style={styles.large}>Facebook Messenger</Text>
+            </TouchableOpacity>
+          )}
         </>
       )}
     </View>
