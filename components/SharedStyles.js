@@ -17,6 +17,9 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#eee',
     flex: 1,
   },
+  topLevelText: {
+    padding: 10,
+  },
   container: {
     flex: 1,
     paddingTop: 10,

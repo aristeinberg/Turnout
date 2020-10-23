@@ -41,6 +41,13 @@ export default function PersonDetails({route}) {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.topLevelText} >
+        Your outreach to {contact.name} will be more effective if you can
+        customize it based on their voting status. In Pennsylvania, in order
+        to check on people's voting statuses, you need their name, birthday,
+        and county. We can help you find that below...
+      </Text>
+      <Text style={styles.topLevelText}>Next step: { contact.getNextStep().label }.</Text>
       <ListButton onPress={navigateToEditBirthday}
                   text={'Birthday: ' + contact.getBirthdayStr()} />
       <ListButton onPress={navigateToEditCounty} 
@@ -54,7 +61,7 @@ export default function PersonDetails({route}) {
       <ListButton onPress={deleteContact} 
                   warn='Are you sure you want to delete this contact?'
                   text='Delete contact' />
-      <Text style={{padding: 10}}>
+      <Text style={styles.topLevelText}>
         Contact last updated: { DateText(contact.data.modified) }
       </Text>
     </View>
