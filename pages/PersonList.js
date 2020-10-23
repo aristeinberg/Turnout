@@ -58,7 +58,7 @@ export default function PersonList() {
     <View style={styles.container}>
       { Object.keys(contacts).length == 0 ? (
         <>
-          <View style={[styles.intro, {flex: 2}]}>
+          <View style={[styles.intro, {flex: 5}]}>
             <Text style={styles.introLead}>
               To get started, add some contacts.
             </Text>
@@ -73,9 +73,15 @@ export default function PersonList() {
               sure their vote counts.
             </Text>
             <Text>
-              For now, we're focusing on Pennsylvania. It's a highly impactful
-              state and with recent rulings on things like "naked ballots" we
-              want to make sure everyone's votes are counted successfully.
+              The 2020 presidential election is likely to hinge on the state
+              of Pennsylvania, so we’re focused there for now. Pennsylvania
+              has complicated rules for mail-in ballots (search around for
+              “naked ballots”), so if your friends aren’t careful, it would
+              be easy to have their ballots not count. The NY Times ranked
+              Pennsylvania as the battleground state most likely to have
+              issues this year. You can help your friends out - you can use
+              this app to look up the status of their ballots and reach out
+              to those who might be having trouble.
             </Text>
           </View>
           <View style={{flex: 1}}/>
