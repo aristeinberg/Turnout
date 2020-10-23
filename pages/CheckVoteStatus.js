@@ -42,7 +42,10 @@ export default function VotingStatus({route}) {
   }
 
   function save() {
-    updateContact(contact.id, { voteStatus : voteStatus, });
+    updateContact(contact.id, {
+      voteStatus : voteStatus,
+      voteStatusTime: new Date(),
+    });
     navigation.navigate("Person Details", {contactId: contact.id});
   }
 
@@ -83,6 +86,11 @@ export default function VotingStatus({route}) {
         ))
       }</Picker>
       <SaveButtonRow onPress={save} />
+      { contact.data.voteStatusTime  &&
+        <Text style={{padding: 10}}>
+          Vote status last updated: { new Date(contact.data.voteStatusTime).toLocaleString() }
+        </Text>
+      }
     </View>
   );
 }

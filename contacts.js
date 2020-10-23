@@ -42,6 +42,8 @@ export default class Contact {
         city: null,
         county: null,
         voteStatus: null,
+        voteStatusTime: null,
+        reachOutTime: null,
         socialUrl: null,
         modified: new Date(),
       },

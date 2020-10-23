@@ -2,15 +2,19 @@ import * as Amplitude from 'expo-analytics-amplitude';
 import React, { useState, useContext } from 'react';
 import { Text, TouchableOpacity, View, TextInput } from 'react-native';
 import Communications from 'react-native-communications';
+import { useNavigation } from '@react-navigation/native';
 
 import { ContactsContext } from '../contacts';
 import { styles } from '../components/SharedStyles'
+import { ListButton } from '../components/Common';
 
 export default function ReachOut({route}) {
   const { contacts, updateContact } = useContext(ContactsContext);
   const contact = contacts[route.params.contactId];
   const [phone, setPhone] = useState(contact.data.phone);
   const [emailAddress, setEmailAddress] = useState(contact.data.email);
+  const [attemptedOutreach, setAttemptedOutreach] = useState(false);
+  const navigation = useNavigation();
 
   let keyMessage = "Hi, I'm concerned about this election so have been checking the vote status of my friends in PA through an app called Drive Turnout.\n\n";
   switch (contact.data.voteStatus) {
@@ -44,6 +48,7 @@ export default function ReachOut({route}) {
       voteStatus: contact.data.voteStatus,
     });
     Communications.textWithoutEncoding(phone, keyMessage);
+    setAttemptedOutreach(true);
   }
   function call() {
     Amplitude.logEventWithProperties('REACH_OUT', {
@@ -51,6 +56,7 @@ export default function ReachOut({route}) {
       voteStatus: contact.data.voteStatus,
     });
     Communications.phonecall(phone, false);
+    setAttemptedOutreach(true);
   }
   function email() {
     Amplitude.logEventWithProperties('REACH_OUT', {
@@ -58,6 +64,7 @@ export default function ReachOut({route}) {
       voteStatus: contact.data.voteStatus,
     });
     Communications.email([emailAddress], null, null, 'checking in', keyMessage);
+    setAttemptedOutreach(true);
   }
   function updatePhoneNumber(val) {
     setPhone(val);
@@ -76,27 +83,40 @@ export default function ReachOut({route}) {
         something like this:
       </Text>
       <View style={styles.messagePreview}><Text>{ keyMessage }</Text></View>
-      <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
-            autoCorrect={false}
-            autoCompleteType='tel'
-            keyboardType='phone-pad'
-            placeholder="Phone number"
-            value={phone} onChangeText={updatePhoneNumber} />
-      <TouchableOpacity style={[styles.button, styles.large]} onPress={text}>
-        <Text style={styles.large}>Text them</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.large]} onPress={call}>
-        <Text style={styles.large}>Call them</Text>
-      </TouchableOpacity>
-      <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
-            autoCorrect={false}
-            autoCompleteType='email'
-            keyboardType='email-address'
-            placeholder="Email"
-            value={emailAddress} onChangeText={updateEmailAddress} />
-      <TouchableOpacity style={[styles.button, styles.large]} onPress={email}>
-        <Text style={styles.large}>Email them</Text>
-      </TouchableOpacity>
+      { attemptedOutreach ? (
+        <>
+          <Text>Were you able to reach them?</Text>
+          <ListButton text="Yes" onPress = {() => {
+            updateContact(contact.id, { reachOutTime: new Date() });
+            navigation.goBack();
+          }} />
+          <ListButton text="No" onPress={() => setAttemptedOutreach(false) } />
+        </>
+      ) : (
+        <>
+          <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
+                autoCorrect={false}
+                autoCompleteType='tel'
+                keyboardType='phone-pad'
+                placeholder="Phone number"
+                value={phone} onChangeText={updatePhoneNumber} />
+          <TouchableOpacity style={[styles.button, styles.large]} onPress={text}>
+            <Text style={styles.large}>Text them</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.large]} onPress={call}>
+            <Text style={styles.large}>Call them</Text>
+          </TouchableOpacity>
+          <TextInput style={{ marginHorizontal: 10, borderColor: 'black', borderBottomWidth: 1, height: 40 }}
+                autoCorrect={false}
+                autoCompleteType='email'
+                keyboardType='email-address'
+                placeholder="Email"
+                value={emailAddress} onChangeText={updateEmailAddress} />
+          <TouchableOpacity style={[styles.button, styles.large]} onPress={email}>
+            <Text style={styles.large}>Email them</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   )
 }

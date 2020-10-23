@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { styles } from '../components/SharedStyles';
-import { ListButton } from '../components/Common';
+import { ListButton, DateText } from '../components/Common';
 import { ContactsContext, VOTE_STATUSES } from '../contacts';
 
 export default function PersonDetails({route}) {
@@ -46,12 +46,17 @@ export default function PersonDetails({route}) {
       <ListButton onPress={navigateToEditCounty} 
                   text={'County: ' + contact.getCountyName()} />
       <ListButton onPress={navigateToCheckVoteStatus} 
-                  text={'Voting status: ' + VOTE_STATUSES[contact.data.voteStatus]} />
+                  text={'Voting status: ' + VOTE_STATUSES[contact.data.voteStatus] +
+                    (contact.data.voteStatusTime ? ' (as of ' + DateText(contact.data.voteStatusTime) + ')'
+                                                 : '')} />
       <ListButton onPress={navigateToReachOut} 
-                  text={'Last time reaching out: Unknown'} />
+                  text={'Last reached out: ' + DateText(contact.data.reachOutTime)} />
       <ListButton onPress={deleteContact} 
-                  warn={'Are you sure you want to delete this contact?'}
-                  text={'Delete contact'} />
+                  warn='Are you sure you want to delete this contact?'
+                  text='Delete contact' />
+      <Text style={{padding: 10}}>
+        Contact last updated: { DateText(contact.data.modified) }
+      </Text>
     </View>
   );
 }

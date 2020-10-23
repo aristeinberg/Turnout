@@ -1,8 +1,12 @@
 - next steps:
-  - [ ] display the time the vote status was last updated
-  - [ ] track when you last reached out, take notes on the result and/or update their vote status
-  - [ ] provide a tip about when it's too late to mail in ballots on reachout page
-  - [ ] provide a link to 866ourvote for help if they have ballot problems
+  - [ ] clean up copy on home screen
+  - [ ] make sure import address book screen would make sense if you live in PA
+  - [ ] optional push notifications to get updated when there's something important to do
+  - [ ] guide the outreach conversation:
+    - [ ] when/how do they plan to vote (make sure they don't VBM too late)
+    - [ ] do they need any help - link to 866ourvote
+    - [ ] would they like to use Turnout? send link
+    - [ ] open-ended notes
 
 - polish:
   - [ ] get rid of the remaining "save" buttons - make everything save automatically on update

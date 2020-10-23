@@ -9,6 +9,10 @@ export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function DateText(date) {
+  return date ? new Date(date).toLocaleString() : 'Unknown';
+}
+
 export function ListButton(props) {
   function onPress(event) {
     if (props.warn) {
