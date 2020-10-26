@@ -1,5 +1,4 @@
 - next steps:
-  - [ ] make sure import address book screen would make sense if you live in PA
   - [ ] optional push notifications to get updated when there's something important to do
   - [ ] guide the outreach conversation:
     - [ ] when/how do they plan to vote (make sure they don't VBM too late)
