@@ -1,3 +1,6 @@
+---
+---
+
 @import "{{ site.theme }}";
 
 .ios_button {
@@ -9,7 +12,6 @@
   display: inline-block;
   width: 120px;
 }
-
 
 @media print, screen and (max-width: 960px) {
   .ios_link, .android_link {
