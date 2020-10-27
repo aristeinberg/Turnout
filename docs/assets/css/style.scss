@@ -2,20 +2,3 @@
 ---
 
 @import "{{ site.theme }}";
-
-.ios_button {
-  margin: 6%;
-  width: 88%;
-}
-
-.ios_link, .android_link {
-  display: inline-block;
-  width: 120px;
-}
-
-@media print, screen and (max-width: 960px) {
-  .ios_link, .android_link {
-    height: 65px;
-    width: auto;
-  }
-}
