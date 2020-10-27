@@ -45,6 +45,7 @@
       </section>
       <footer>
         {% if site.android_link or site.ios_link %}
+        <div style="display: none;">
         <p class="view">
           {% if site.ios_link %}
           <a href="{{ site.ios_link }}" class="ios_link">
@@ -60,7 +61,7 @@
                  class="android_button">
           </a>
           {% endif %}
-        </p>
+        </p></div>
         {% endif %}
         <p>This project is built by Drive Turnout LLC.</p>
       </footer>
