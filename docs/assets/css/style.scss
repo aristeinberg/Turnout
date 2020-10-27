@@ -2,3 +2,8 @@
 ---
 
 @import "{{ site.theme }}";
+
+.ios_link, .android_link {
+  display: inline-block;
+  margin: 10px;
+}
