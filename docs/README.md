@@ -1,4 +1,13 @@
-# Drive Turnout
+---
+---
+
+# Drive Turnout helps you help your friends in swing states
+
+![Example text message to friend](/assets/text.png)
+
+## Make an impact this election. Download now.
+
+### Get it for [iOS]({{ site.ios_link }}) and [Android]({{ site.android_link}}).
 
 Drive Turnout empowers you to make a difference this election. Even if you
 don't live in a swing state, chances you, probably know some people who do.
