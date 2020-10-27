@@ -1,6 +1,3 @@
----
----
-
 # Drive Turnout helps you help your friends in swing states
 
 ![Example text message to friend](/assets/text.png)
