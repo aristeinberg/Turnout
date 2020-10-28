@@ -5,7 +5,7 @@
 ## Make an impact this election. Download now.
 
 ### Get it for [~~iOS~~]({{ site.ios_link }}) and [Android]({{ site.android_link}}).
-### iOS app is currently blocked for unknown reasons by Apple.
+### iOS app is still waiting for Apple's approval.
 
 Drive Turnout empowers you to make a difference this election. Even if you
 don't live in a swing state, chances are, you probably know some people who do.
