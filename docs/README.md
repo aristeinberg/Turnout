@@ -7,7 +7,7 @@
 ### Get it for [iOS]({{ site.ios_link }}) and [Android]({{ site.android_link}}).
 
 Drive Turnout empowers you to make a difference this election. Even if you
-don't live in a swing state, chances you, probably know some people who do.
+don't live in a swing state, chances are, you probably know some people who do.
 We'll help you find those people and make sure that their votes count.
 
 The 2020 presidential election is likely to hinge on the state of
@@ -28,7 +28,7 @@ control of any communication you want to do with those people.
 
 The Drive Turnout app runs entirely on your phone - we only track anonymous
 usage information. No private information is shared back to our servers. The
-app helps facilitate access to your phone's address book, your Facebook
+app facilitates access to your phone's address book, your Facebook
 contacts, and the Pennsylvania state-wide system for ballot tracking, but
 none of this makes its way to us. We do track the voting status of your
 contacts, anonymously, as a way of measuring impact.
