@@ -20,10 +20,10 @@ export default function ReachOut({route}) {
   let keyMessage = "Hi, I'm concerned about this election so have been checking the vote status of my friends in PA through an app called Drive Turnout.\n\n";
   switch (contact.data.voteStatus) {
     case 'VBM_REQUESTED':
-      keyMessage += "I see you requested a mail ballot, keep your eyes out for it! And don't forget the privacy envelope.";
+      keyMessage += "I see you requested a mail ballot. We're running out of time, do you know where the nearest dropbox is?";
       break;
     case 'VBM_SENT_BY_OFFICE':
-      keyMessage += "It looks like your mail ballot was sent over to you - did you receive it yet?"
+      keyMessage += "Are you planning to return your mail ballot? Do you know where the nearest dropbox is?"
       break;
     case 'VBM_RECEIVED_BY_OFFICE':
       keyMessage += "Great job getting your mail ballot back. Did you remember the privacy envelope?"
