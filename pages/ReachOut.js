@@ -17,7 +17,8 @@ export default function ReachOut({route}) {
   const [attemptedOutreach, setAttemptedOutreach] = useState(false);
   const navigation = useNavigation();
 
-  let keyMessage = "Hi, I'm concerned about this election so have been checking the vote status of my friends in PA through an app called Drive Turnout.\n\n";
+  const firstName = contact.name.split(' ', 1)[0];
+  let keyMessage = `Hi ${firstName}, I'm concerned about this election so have been checking up on all my Facebook friends who live in Pennsylvania.\n\n`;
   switch (contact.data.voteStatus) {
     case 'VBM_REQUESTED':
       keyMessage += "I see you requested a mail ballot. We're running out of time, do you know where the nearest dropbox is?";
@@ -39,7 +40,7 @@ export default function ReachOut({route}) {
       break;
     case 'UNKNOWN':
     default:
-      keyMessage += "Are you planning to vote in this election? You should do it ASAP!";
+      keyMessage += "Were you able to vote yet?";
       break;
   }
 
@@ -107,7 +108,7 @@ export default function ReachOut({route}) {
       <View style={styles.messagePreview}><Text>{ keyMessage }</Text></View>
       { attemptedOutreach ? (
         <>
-          <Text>Were you able to reach them?</Text>
+          <Text>Did you reach out to them?</Text>
           <ListButton text="Yes" onPress = {() => {
             updateContact(contact.id, { reachOutTime: new Date() });
             navigation.goBack();

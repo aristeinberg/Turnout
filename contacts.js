@@ -87,16 +87,25 @@ export default class Contact {
   }
 
   getNextStep() {
+    if (this.data.voteStatus == 'VOTE_COUNTED') {
+      return { page: 'Reach Out', label: 'Done! They voted' };
+    }
+    if (this.data.reachOutTime) {
+      return {
+        page: 'Check Vote Status',
+        label: 'Wait for reply / update vote status'
+      };
+    }
+    if (this.data.voteStatus) {
+      return { page: 'Reach Out', label: 'Reach out' };
+    }
     if (!this.data.birthYear) {
       return { page:'Edit Birthday', label: 'Find birthday'};
     }
     if (!this.data.county) {
       return { page:'Edit County', label: 'Find county'};
     }
-    if (!this.data.voteStatus) {
-      return { page:'Check Vote Status', label: 'Check voting status'};
-    }
-    return { page:'Reach Out', label: 'Reach out'};
+    return { page:'Check Vote Status', label: 'Check voting status'};
   }
 
   getFourDigitBirthYear() {
